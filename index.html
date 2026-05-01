@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I WILL. — The Origin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #060606;
+  --charcoal: #1A1A1A;
+  --cream: #E8DCC8;
+  --gold: #C5A55A;
+  --muted: #B8A898;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--black);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.film {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: grain 0.12s steps(1) infinite;
+}
+
+@keyframes grain {
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-5%,-5%); }
+  40%  { transform: translate(5%,10%); }
+  60%  { transform: translate(15%,0); }
+  80%  { transform: translate(-10%,5%); }
+  100% { transform: translate(5%,-10%); }
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 89;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%,
+    transparent 25%,
+    rgba(0,0,0,0.5) 65%,
+    rgba(0,0,0,0.92) 100%
+  );
+}
+
+.lb { position: fixed; left: 0; right: 0; z-index: 88; background: var(--black); }
+.lb-top { top: 0; height: 5%; }
+.lb-bottom { bottom: 0; height: 5%; }
+
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.scene.active { opacity: 1; }
+
+.scene-bg {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+}
+
+.scene-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.grade-night  { background: rgba(4, 8, 20, 0.52); }
+.grade-amber  { background: rgba(20, 10, 2, 0.48); }
+.grade-deep   { background: rgba(2, 6, 14, 0.58); }
+.grade-warm   { background: rgba(15, 8, 2, 0.45); }
+.grade-dark   { background: rgba(0, 0, 0, 0.60); }
+
+.kb-in    { animation: kbIn  10s ease-in-out forwards; }
+.kb-out   { animation: kbOut 10s ease-in-out forwards; }
+.kb-left  { animation: kbLeft 10s ease-in-out forwards; }
+.kb-right { animation: kbRight 10s ease-in-out forwards; }
+
+@keyframes kbIn    { from { transform: scale(1.08); } to { transform: scale(1.0); } }
+@keyframes kbOut   { from { transform: scale(1.0);  } to { transform: scale(1.08); } }
+@keyframes kbLeft  { from { transform: scale(1.06) translateX(2%);  } to { transform: scale(1.0) translateX(-2%); } }
+@keyframes kbRight { from { transform: scale(1.06) translateX(-2%); } to { transform: scale(1.0) translateX(2%); } }
+
+.scene-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15% 44px 10% 44px;
+  text-align: center;
+  z-index: 10;
+}
+
+.scene-content.center {
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+.location {
+  position: absolute;
+  top: 11%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.8em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.55);
+  opacity: 0;
+  animation: fadeIn 1.2s ease forwards 0.8s;
+  animation-play-state: paused;
+}
+
+.scene.active .location { animation-play-state: running; }
+
+.s-label {
+  font-size: 10px;
+  letter-spacing: 0.65em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.55);
+  margin-bottom: 18px;
+  opacity: 0;
+  animation: fadeIn 1s ease both;
+  animation-delay: 0.4s;
+  animation-play-state: paused;
+}
+
+.scene.active .s-label { animation-play-state: running; }
+
+.s-text {
+  font-size: clamp(28px, 6.5vw, 48px);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.45;
+  opacity: 0;
+  letter-spacing: 0.015em;
+}
+
+.s-text.italic {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--muted);
+  font-size: clamp(24px, 5.5vw, 40px);
+}
+
+.s-text.gold {
+  color: var(--gold);
+  font-weight: 400;
+}
+
+.s-text.large {
+  font-size: clamp(38px, 9vw, 68px);
+  font-weight: 400;
+}
+
+.a1 { opacity: 0; animation: fadeIn 1.4s ease both; animation-delay: 0.7s;  animation-play-state: paused; }
+.a2 { opacity: 0; animation: fadeIn 1.4s ease both; animation-delay: 1.8s;  animation-play-state: paused; }
+.a3 { opacity: 0; animation: fadeIn 1.4s ease both; animation-delay: 3.0s;  animation-play-state: paused; }
+.a4 { opacity: 0; animation: fadeIn 1.4s ease both; animation-delay: 4.4s;  animation-play-state: paused; }
+
+.scene.active .a1,
+.scene.active .a2,
+.scene.active .a3,
+.scene.active .a4 { animation-play-state: running; }
+
+.g-rule {
+  width: 36px;
+  height: 1px;
+  background: var(--gold);
+  margin: 20px auto;
+  opacity: 0;
+  animation: fadeIn 1s ease both;
+  animation-delay: 1.2s;
+  animation-play-state: paused;
+}
+
+.scene.active .g-rule { animation-play-state: running; }
+
+/* S1 */
+#s1 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.65) 100%),
+    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1080&q=85&auto=format&fit=crop');
+}
+
+/* S2 */
+#s2 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.72) 100%),
+    url('https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 40%;
+}
+
+/* S3 */
+#s3 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.68) 100%),
+    url('https://images.unsplash.com/photo-1508614999368-9260051292e5?w=1080&q=85&auto=format&fit=crop');
+}
+
+/* S3B */
+#s3b .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.80) 100%),
+    url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1080&q=85&auto=format&fit=crop');
+}
+
+/* S4 */
+#s4 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.7) 100%),
+    url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 25%;
+}
+
+/* S5 */
+#s5 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.68) 100%),
+    url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 45%;
+}
+
+/* S6 */
+#s6 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.7) 100%),
+    url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 30%;
+}
+
+/* S7 */
+#s7 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.75) 100%),
+    url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1080&q=85&auto=format&fit=crop');
+  opacity: 0.55;
+}
+
+/* S8 */
+#s8 { background: #141414; }
+
+/* S9 */
+#s9 { background: #080808; }
+
+/* S10 */
+#s10 { background: #060606; }
+
+.quote-wrap {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 40px;
+}
+
+.q-line-1 {
+  display: block;
+  font-size: clamp(32px, 8vw, 56px);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: fadeIn 1.4s ease both;
+  animation-delay: 0.6s;
+  animation-play-state: paused;
+}
+
+.q-line-2 {
+  display: block;
+  font-size: clamp(26px, 6vw, 44px);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  margin-top: 6px;
+  opacity: 0;
+  animation: fadeIn 1.4s ease both;
+  animation-delay: 1.6s;
+  animation-play-state: paused;
+}
+
+.q-sig {
+  display: block;
+  font-size: 28px;
+  font-style: italic;
+  color: var(--gold);
+  margin-top: 40px;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  animation: fadeIn 1.2s ease both;
+  animation-delay: 2.6s;
+  animation-play-state: paused;
+}
+
+.scene.active .q-line-1,
+.scene.active .q-line-2,
+.scene.active .q-sig { animation-play-state: running; }
+
+.brand-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+}
+
+.b-i {
+  font-size: clamp(110px, 24vw, 200px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: fadeIn 1.8s ease both;
+  animation-delay: 0.3s;
+  animation-play-state: paused;
+}
+
+.b-will {
+  font-size: clamp(110px, 24vw, 200px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: fadeIn 1.8s ease both;
+  animation-delay: 0.8s;
+  animation-play-state: paused;
+}
+
+.scene.active .b-i,
+.scene.active .b-will { animation-play-state: running; }
+
+.b-period { color: var(--gold); }
+
+.b-rule {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  margin: 20px auto;
+  opacity: 0;
+  animation: ruleExpand 1.2s ease both;
+  animation-delay: 1.4s;
+  animation-play-state: paused;
+}
+
+.scene.active .b-rule { animation-play-state: running; }
+
+@keyframes ruleExpand {
+  from { width: 0; opacity: 0; }
+  to   { width: 48px; opacity: 1; }
+}
+
+.b-fitfo {
+  font-size: clamp(36px, 8vw, 64px);
+  font-weight: 300;
+  letter-spacing: 0.8em;
+  padding-left: 0.8em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.45);
+  opacity: 0;
+  text-align: center;
+  width: 100%;
+  animation: fadeIn 1.5s ease both;
+  animation-delay: 1.8s;
+  animation-play-state: paused;
+}
+
+.scene.active .b-fitfo { animation-play-state: running; }
+
+.b-date {
+  position: absolute;
+  bottom: 11%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.55em;
+  color: rgba(197,165,90,0.28);
+  opacity: 0;
+  animation: fadeIn 1.5s ease both;
+  animation-delay: 2.4s;
+  animation-play-state: paused;
+}
+
+.scene.active .b-date { animation-play-state: running; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes brandSlide {
+  from { opacity: 0; filter: blur(6px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
+.prog {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 1.5px;
+  width: 0;
+  background: linear-gradient(to right, rgba(197,165,90,0.15), rgba(197,165,90,0.55));
+  z-index: 100;
+  transition: width 0.3s linear;
+}
+
+</style>
+</head>
+<body>
+
+<div class="film">
+
+  <div class="lb lb-top"></div>
+  <div class="lb lb-bottom"></div>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+
+  <!-- S1 — MIAMI -->
+  <div class="scene" id="s1">
+    <div class="scene-bg kb-in"></div>
+    <div class="scene-overlay grade-night"></div>
+    <p class="location">Miami, Florida</p>
+    <div class="scene-content">
+      <p class="s-label">Where it started</p>
+      <p class="s-text italic a1">Some things don't start<br>with a plan.</p>
+      <p class="s-text italic a2" style="margin-top:10px;">They start with a decision.</p>
+    </div>
+  </div>
+
+  <!-- S2 — PARKING LOT -->
+  <div class="scene" id="s2">
+    <div class="scene-bg kb-left"></div>
+    <div class="scene-overlay grade-deep"></div>
+    <div class="scene-content">
+      <p class="s-label">The moment</p>
+      <p class="s-text a1">There comes a moment<br>every man knows.</p>
+      <p class="s-text italic a2" style="margin-top:12px;">When everything unresolved<br>sits across from you.</p>
+    </div>
+  </div>
+
+  <!-- S3 — NOT TOMORROW NOW -->
+  <div class="scene" id="s3">
+    <div class="scene-bg kb-right"></div>
+    <div class="scene-overlay grade-amber"></div>
+    <div class="scene-content">
+      <p class="s-text italic a1">And demands contemplation.<br>And answers.</p>
+      <p class="s-text a2" style="margin-top:20px;">Not tomorrow.</p>
+      <p class="s-text gold a3" style="margin-top:8px; font-size: clamp(30px, 7vw, 52px); letter-spacing: 0.04em;">Now.</p>
+    </div>
+  </div>
+
+  <!-- S3B — THE DECLARATION -->
+  <div class="scene" id="s3b">
+    <div class="scene-bg kb-in"></div>
+    <div class="scene-overlay grade-dark"></div>
+    <div class="scene-content center">
+      <p class="s-label" style="font-size:11px; letter-spacing:0.8em;">The Declaration</p>
+      <div style="margin-top: 16px;">
+        <div class="b-i">I</div>
+        <div class="b-will">WILL<span class="b-period">.</span></div>
+      </div>
+      <div class="b-fitfo" style="margin-top:8px;">FITFO</div>
+    </div>
+  </div>
+
+  <!-- S4 — THE WORK -->
+  <div class="scene" id="s4">
+    <div class="scene-bg kb-in"></div>
+    <div class="scene-overlay grade-deep"></div>
+    <div class="scene-content">
+      <p class="s-label">The work</p>
+      <p class="s-text italic a1">Before sunrise.</p>
+      <p class="s-text italic a2" style="margin-top:20px;">After midnight.</p>
+      <p class="s-text a3" style="margin-top:52px; font-size: clamp(26px, 6vw, 44px); color: var(--gold);">Because</p>
+      <p class="s-text italic a4" style="margin-top:52px;">I'm working<br>on something.</p>
+    </div>
+  </div>
+
+  <!-- S5 — THE STUDY -->
+  <div class="scene" id="s5">
+    <div class="scene-bg kb-left"></div>
+    <div class="scene-overlay grade-warm"></div>
+    <div class="scene-content">
+      <p class="s-label">The standard</p>
+      <p class="s-text italic a1">Reading at 2am.</p>
+      <p class="s-text italic a2" style="margin-top:32px;">In the gym before dawn.</p>
+    </div>
+  </div>
+
+  <!-- S6 — THE GYM -->
+  <div class="scene" id="s6">
+    <div class="scene-bg kb-right"></div>
+    <div class="scene-overlay grade-dark"></div>
+    <div class="scene-content">
+      <p class="s-label">The discipline</p>
+      <p class="s-text italic a1">Any time you're working<br>on something —</p>
+      <p class="s-text a2" style="margin-top:20px;">you go through<br>a period of suffering.</p>
+    </div>
+  </div>
+
+  <!-- S7 — THE QUOTE -->
+  <div class="scene" id="s7">
+    <div class="scene-bg kb-in"></div>
+    <div class="scene-overlay grade-dark"></div>
+    <div class="scene-content center">
+      <div class="quote-wrap">
+        <span class="q-line-1">There comes a point</span>
+        <span class="q-line-2">when excuses lose their value.</span>
+        <span class="q-sig">— W</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- S8 — BRAND MARK -->
+  <div class="scene" id="s8">
+    <div class="brand-wrap">
+      <div class="b-i">I</div>
+      <div class="b-will">WILL<span class="b-period">.</span></div>
+      <div class="b-rule"></div>
+      <div class="b-fitfo">FITFO</div>
+    </div>
+    <div class="b-date">iwill.world</div>
+  </div>
+
+  <!-- S9 — IWILL.WORLD -->
+  <div class="scene" id="s9">
+    <div style="
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 10;
+    ">
+      <div style="
+        font-size: 13px;
+        letter-spacing: 0.6em;
+        text-transform: uppercase;
+        color: rgba(197,165,90,0.5);
+        opacity: 0;
+        animation: fadeIn 1.8s ease both 0.6s;
+        animation-play-state: paused;
+      " class="s9-url">iwill.world</div>
+    </div>
+  </div>
+
+  <!-- S10 — MAY 4TH 2026 -->
+  <div class="scene" id="s10">
+    <div style="
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 10;
+    ">
+      <div style="
+        font-size: clamp(52px, 13vw, 100px);
+        font-weight: 300;
+        font-style: italic;
+        color: var(--gold);
+        letter-spacing: 0.04em;
+        opacity: 0;
+        animation: fadeIn 2s ease both 0.4s;
+        animation-play-state: paused;
+        line-height: 1;
+      " class="s10-date">May 4th</div>
+      <div style="
+        font-size: clamp(16px, 4vw, 28px);
+        font-weight: 300;
+        color: rgba(197,165,90,0.35);
+        letter-spacing: 0.3em;
+        margin-top: 16px;
+        opacity: 0;
+        animation: fadeIn 1.4s ease both 1.4s;
+        animation-play-state: paused;
+      " class="s10-year">2026</div>
+      <div style="
+        width: 0;
+        height: 1px;
+        background: var(--gold);
+        margin: 40px auto;
+        opacity: 0;
+        animation: ruleExpand 1.2s ease both 2s;
+        animation-play-state: paused;
+      " class="s10-rule"></div>
+    </div>
+  </div>
+
+  <div class="prog" id="prog"></div>
+
+</div>
+
+<script>
+  const scenes = document.querySelectorAll('.scene');
+  const prog = document.getElementById('prog');
+
+  const dur = [5000, 5000, 4500, 4500, 7500, 4500, 5000, 7500, 5000, 5000, 8000];
+  const total = dur.reduce((a,b) => a+b, 0);
+
+  let cur = 0;
+
+  function activateScene(index) {
+    const scene = scenes[index];
+    scene.classList.add('active');
+    // Reset and restart all paused animations in this scene
+    scene.querySelectorAll('*').forEach(el => {
+      const computed = window.getComputedStyle(el).animationName;
+      if (computed && computed !== 'none') {
+        el.style.animationPlayState = 'paused';
+        void el.offsetWidth;
+        el.style.animationPlayState = '';
+      }
+    });
+  }
+
+  activateScene(0);
+
+  function next() {
+    if (cur >= scenes.length - 1) return;
+    scenes[cur].style.opacity = '0';
+    scenes[cur].style.transition = 'opacity 1s cubic-bezier(0.4,0,0.2,1)';
+    cur++;
+    setTimeout(() => {
+      activateScene(cur);
+      if (cur < scenes.length - 1) setTimeout(next, dur[cur]);
+    }, 300);
+  }
+
+  setTimeout(next, dur[0]);
+
+  let ms = 0;
+  setInterval(() => {
+    ms += 50;
+    prog.style.width = Math.min((ms/total)*100, 100) + '%';
+  }, 50);
+</script>
+
+</body>
+</html>
