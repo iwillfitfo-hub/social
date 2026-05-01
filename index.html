@@ -25,6 +25,10 @@ html, body {
   font-family: 'Cormorant Garamond', Georgia, serif;
 }
 
+/* ═══════════════════════════════════════════
+   FILM
+═══════════════════════════════════════════ */
+
 .film {
   position: relative;
   width: 100vw;
@@ -32,6 +36,10 @@ html, body {
   overflow: hidden;
   background: var(--black);
 }
+
+/* ═══════════════════════════════════════════
+   GRAIN
+═══════════════════════════════════════════ */
 
 .grain {
   position: fixed;
@@ -55,6 +63,10 @@ html, body {
   100% { transform: translate(5%,-10%); }
 }
 
+/* ═══════════════════════════════════════════
+   VIGNETTE
+═══════════════════════════════════════════ */
+
 .vignette {
   position: fixed;
   inset: 0;
@@ -67,9 +79,17 @@ html, body {
   );
 }
 
+/* ═══════════════════════════════════════════
+   LETTERBOX
+═══════════════════════════════════════════ */
+
 .lb { position: fixed; left: 0; right: 0; z-index: 88; background: var(--black); }
 .lb-top { top: 0; height: 5%; }
 .lb-bottom { bottom: 0; height: 5%; }
+
+/* ═══════════════════════════════════════════
+   SCENES
+═══════════════════════════════════════════ */
 
 .scene {
   position: absolute;
@@ -90,14 +110,19 @@ html, body {
   background-position: center;
 }
 
-.scene-overlay { position: absolute; inset: 0; }
+.scene-overlay {
+  position: absolute;
+  inset: 0;
+}
 
+/* Color grades */
 .grade-night  { background: rgba(4, 8, 20, 0.52); }
 .grade-amber  { background: rgba(20, 10, 2, 0.48); }
 .grade-deep   { background: rgba(2, 6, 14, 0.58); }
 .grade-warm   { background: rgba(15, 8, 2, 0.45); }
 .grade-dark   { background: rgba(0, 0, 0, 0.60); }
 
+/* Ken Burns variants */
 .kb-in    { animation: kbIn  10s ease-in-out forwards; }
 .kb-out   { animation: kbOut 10s ease-in-out forwards; }
 .kb-left  { animation: kbLeft 10s ease-in-out forwards; }
@@ -107,6 +132,10 @@ html, body {
 @keyframes kbOut   { from { transform: scale(1.0);  } to { transform: scale(1.08); } }
 @keyframes kbLeft  { from { transform: scale(1.06) translateX(2%);  } to { transform: scale(1.0) translateX(-2%); } }
 @keyframes kbRight { from { transform: scale(1.06) translateX(-2%); } to { transform: scale(1.0) translateX(2%); } }
+
+/* ═══════════════════════════════════════════
+   SCENE CONTENT
+═══════════════════════════════════════════ */
 
 .scene-content {
   position: absolute;
@@ -125,6 +154,7 @@ html, body {
   padding-bottom: 0;
 }
 
+/* Location */
 .location {
   position: absolute;
   top: 11%;
@@ -136,12 +166,10 @@ html, body {
   text-transform: uppercase;
   color: rgba(197,165,90,0.8);
   opacity: 0;
-  animation: fadeIn 1.2s ease forwards 0.8s;
-  animation-play-state: paused;
+  animation: fadeUp 1.2s ease forwards 0.8s;
 }
 
-.scene.active .location { animation-play-state: running; }
-
+/* Labels */
 .s-label {
   font-size: 10px;
   letter-spacing: 0.65em;
@@ -149,12 +177,10 @@ html, body {
   color: rgba(197,165,90,0.85);
   margin-bottom: 18px;
   opacity: 0;
-  animation: fadeIn 1s ease both 0.4s;
-  animation-play-state: paused;
+  animation: fadeUp 1s ease forwards 0.6s;
 }
 
-.scene.active .s-label { animation-play-state: running; }
-
+/* Primary text — BOLD AND CONFIDENT */
 .s-text {
   font-size: clamp(28px, 6.5vw, 48px);
   font-weight: 400;
@@ -171,31 +197,52 @@ html, body {
   font-size: clamp(24px, 5.5vw, 40px);
 }
 
-.s-text.gold { color: var(--gold); font-weight: 400; }
-.s-text.large { font-size: clamp(38px, 9vw, 68px); font-weight: 400; }
+.s-text.gold {
+  color: var(--gold);
+  font-weight: 400;
+}
 
-.a1 { opacity: 0; animation: fadeIn 1.4s ease both 0.7s;  animation-play-state: paused; }
-.a2 { opacity: 0; animation: fadeIn 1.4s ease both 1.8s;  animation-play-state: paused; }
-.a3 { opacity: 0; animation: fadeIn 1.4s ease both 3.0s;  animation-play-state: paused; }
-.a4 { opacity: 0; animation: fadeIn 1.4s ease both 4.4s;  animation-play-state: paused; }
+.s-text.large {
+  font-size: clamp(38px, 9vw, 68px);
+  font-weight: 400;
+}
 
+/* Stagger animations — paused until parent scene is active */
+.a1 { opacity: 0; animation: fadeUp 1.2s ease both; animation-delay: 0.7s; animation-play-state: paused; }
+.a2 { opacity: 0; animation: fadeUp 1.2s ease both; animation-delay: 1.6s; animation-play-state: paused; }
+.a3 { opacity: 0; animation: fadeUp 1.2s ease both; animation-delay: 2.8s; animation-play-state: paused; }
+.a4 { opacity: 0; animation: fadeUp 1.2s ease both; animation-delay: 4.2s; animation-play-state: paused; }
+
+/* Fire animations only when scene is active */
 .scene.active .a1,
 .scene.active .a2,
 .scene.active .a3,
 .scene.active .a4 { animation-play-state: running; }
 
+/* Label also paused until active */
+.s-label { animation-play-state: paused; }
+.scene.active .s-label { animation-play-state: running; }
+
+/* Gold rule */
 .g-rule {
   width: 36px;
   height: 1px;
   background: var(--gold);
   margin: 20px auto;
   opacity: 0;
-  animation: fadeIn 1s ease both 1.2s;
-  animation-play-state: paused;
+  animation: ruleIn 1s ease forwards 1.2s;
 }
 
-.scene.active .g-rule { animation-play-state: running; }
+@keyframes ruleIn {
+  from { width: 0; opacity: 0; }
+  to   { width: 36px; opacity: 1; }
+}
 
+/* ═══════════════════════════════════════════
+   PHOTO BACKGROUNDS
+═══════════════════════════════════════════ */
+
+/* S1 — Miami skyline night */
 #s1 .scene-bg {
   background-image:
     linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.65) 100%),
@@ -203,6 +250,7 @@ html, body {
   background-position: center 60%;
 }
 
+/* S2 — Parking lot night */
 #s2 .scene-bg {
   background-image:
     linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.72) 100%),
@@ -210,18 +258,14 @@ html, body {
   background-position: center 40%;
 }
 
+/* S3 — Dark road / car lights */
 #s3 .scene-bg {
   background-image:
     linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.68) 100%),
     url('https://images.unsplash.com/photo-1508614999368-9260051292e5?w=1080&q=85&auto=format&fit=crop');
 }
 
-#s3b .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.80) 100%),
-    url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1080&q=85&auto=format&fit=crop');
-}
-
+/* S4 — Working late / laptop */
 #s4 .scene-bg {
   background-image:
     linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.7) 100%),
@@ -229,6 +273,7 @@ html, body {
   background-position: center 25%;
 }
 
+/* S5 — Books / study */
 #s5 .scene-bg {
   background-image:
     linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.68) 100%),
@@ -236,6 +281,7 @@ html, body {
   background-position: center 45%;
 }
 
+/* S6 — Gym dark */
 #s6 .scene-bg {
   background-image:
     linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.7) 100%),
@@ -243,6 +289,7 @@ html, body {
   background-position: center 30%;
 }
 
+/* S7 — Stars / galaxy */
 #s7 .scene-bg {
   background-image:
     linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.75) 100%),
@@ -250,9 +297,12 @@ html, body {
   opacity: 0.55;
 }
 
+/* S8 — Brand mark — pure charcoal */
 #s8 { background: #141414; }
-#s9 { background: #080808; }
-#s10 { background: #060606; }
+
+/* ═══════════════════════════════════════════
+   SCENE 7 — QUOTE SPECIFIC
+═══════════════════════════════════════════ */
 
 .quote-wrap {
   position: relative;
@@ -269,8 +319,7 @@ html, body {
   line-height: 1.3;
   letter-spacing: 0.02em;
   opacity: 0;
-  animation: fadeIn 1.4s ease both 0.6s;
-  animation-play-state: paused;
+  animation: fadeUp 1.4s ease forwards 0.6s;
 }
 
 .q-line-2 {
@@ -283,8 +332,7 @@ html, body {
   letter-spacing: 0.02em;
   margin-top: 6px;
   opacity: 0;
-  animation: fadeIn 1.4s ease both 1.6s;
-  animation-play-state: paused;
+  animation: fadeUp 1.4s ease forwards 1.4s;
 }
 
 .q-sig {
@@ -295,13 +343,24 @@ html, body {
   margin-top: 40px;
   letter-spacing: 0.12em;
   opacity: 0;
-  animation: fadeIn 1.2s ease both 2.6s;
-  animation-play-state: paused;
+  animation: fadeUp 1.2s ease forwards 2.4s;
 }
 
-.scene.active .q-line-1,
-.scene.active .q-line-2,
-.scene.active .q-sig { animation-play-state: running; }
+.q-lose {
+  display: block;
+  font-size: clamp(18px, 4vw, 28px);
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(197,165,90,0.7);
+  line-height: 1.5;
+  margin-top: 48px;
+  opacity: 0;
+  animation: fadeUp 1.4s ease forwards 3.4s;
+}
+
+/* ═══════════════════════════════════════════
+   SCENE 8 — BRAND MARK
+═══════════════════════════════════════════ */
 
 .brand-wrap {
   position: absolute;
@@ -321,8 +380,7 @@ html, body {
   line-height: 0.82;
   letter-spacing: -0.02em;
   opacity: 0;
-  animation: brandSlide 1.8s ease both 0.3s;
-  animation-play-state: paused;
+  animation: brandSlide 2s cubic-bezier(0.16,1,0.3,1) forwards 0.3s;
 }
 
 .b-will {
@@ -332,12 +390,8 @@ html, body {
   line-height: 0.82;
   letter-spacing: -0.02em;
   opacity: 0;
-  animation: brandSlide 1.8s ease both 0.8s;
-  animation-play-state: paused;
+  animation: brandSlide 2s cubic-bezier(0.16,1,0.3,1) forwards 0.6s;
 }
-
-.scene.active .b-i,
-.scene.active .b-will { animation-play-state: running; }
 
 .b-period { color: var(--gold); }
 
@@ -347,11 +401,8 @@ html, body {
   background: var(--gold);
   margin: 20px auto;
   opacity: 0;
-  animation: ruleExpand 1.2s ease both 1.4s;
-  animation-play-state: paused;
+  animation: ruleExpand 1.2s ease forwards 1.2s;
 }
-
-.scene.active .b-rule { animation-play-state: running; }
 
 @keyframes ruleExpand {
   from { width: 0; opacity: 0; }
@@ -368,11 +419,23 @@ html, body {
   opacity: 0;
   text-align: center;
   width: 100%;
-  animation: fadeIn 1.5s ease both 1.8s;
-  animation-play-state: paused;
+  animation: fadeIn 1.5s ease forwards 1.6s;
 }
 
-.scene.active .b-fitfo { animation-play-state: running; }
+.b-may4 {
+  position: absolute;
+  bottom: 18%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: clamp(28px, 6vw, 44px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  opacity: 0;
+  animation: fadeUp 1.5s ease forwards 2s;
+}
 
 .b-date {
   position: absolute;
@@ -384,21 +447,45 @@ html, body {
   letter-spacing: 0.55em;
   color: rgba(197,165,90,0.28);
   opacity: 0;
-  animation: fadeIn 1.5s ease both 2.4s;
-  animation-play-state: paused;
+  animation: fadeIn 1.5s ease forwards 2.6s;
 }
 
-.scene.active .b-date { animation-play-state: running; }
+.b-city {
+  position: absolute;
+  bottom: 7.5%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.14);
+  opacity: 0;
+  animation: fadeIn 1.5s ease forwards 3s;
+}
 
 @keyframes brandSlide {
   from { opacity: 0; filter: blur(6px); }
   to   { opacity: 1; filter: blur(0); }
 }
 
+/* ═══════════════════════════════════════════
+   SHARED KEYFRAMES
+═══════════════════════════════════════════ */
+
+@keyframes fadeUp {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+
+/* ═══════════════════════════════════════════
+   PROGRESS
+═══════════════════════════════════════════ */
 
 .prog {
   position: fixed;
@@ -422,6 +509,9 @@ html, body {
   <div class="grain"></div>
   <div class="vignette"></div>
 
+  <!-- ══════════════════════════════
+       S1 — MIAMI AT NIGHT
+  ══════════════════════════════ -->
   <div class="scene" id="s1">
     <div class="scene-bg kb-in"></div>
     <div class="scene-overlay grade-night"></div>
@@ -433,6 +523,9 @@ html, body {
     </div>
   </div>
 
+  <!-- ══════════════════════════════
+       S2 — THE PARKING LOT
+  ══════════════════════════════ -->
   <div class="scene" id="s2">
     <div class="scene-bg kb-left"></div>
     <div class="scene-overlay grade-deep"></div>
@@ -443,6 +536,9 @@ html, body {
     </div>
   </div>
 
+  <!-- ══════════════════════════════
+       S3 — THE DECLARATION
+  ══════════════════════════════ -->
   <div class="scene" id="s3">
     <div class="scene-bg kb-right"></div>
     <div class="scene-overlay grade-amber"></div>
@@ -453,14 +549,33 @@ html, body {
     </div>
   </div>
 
+  <!-- ══════════════════════════════
+       S3B — I WILL FITFO ALONE
+  ══════════════════════════════ -->
   <div class="scene" id="s3b">
     <div class="scene-bg kb-in"></div>
     <div class="scene-overlay grade-dark"></div>
     <div class="scene-content center">
-      <p class="s-label" style="font-size:11px; letter-spacing:0.8em;">The Declaration</p>
+      <p class="s-label" style="animation-delay:0.2s; font-size:11px; letter-spacing:0.8em;">The Declaration</p>
       <div style="margin-top: 16px;">
-        <div class="b-i">I</div>
-        <div class="b-will">WILL<span class="b-period">.</span></div>
+        <div style="
+          font-size: clamp(72px, 16vw, 130px);
+          font-weight: 300;
+          color: var(--cream);
+          line-height: 0.85;
+          letter-spacing: -0.02em;
+          opacity: 0;
+          animation: brandSlide 1.4s cubic-bezier(0.16,1,0.3,1) forwards 0.5s;
+        ">I</div>
+        <div style="
+          font-size: clamp(72px, 16vw, 130px);
+          font-weight: 300;
+          color: var(--cream);
+          line-height: 0.85;
+          letter-spacing: -0.02em;
+          opacity: 0;
+          animation: brandSlide 1.4s cubic-bezier(0.16,1,0.3,1) forwards 0.8s;
+        ">WILL<span style="color: var(--gold);">.</span></div>
       </div>
       <div style="
         font-size: clamp(22px, 5vw, 40px);
@@ -471,13 +586,15 @@ html, body {
         color: var(--gold);
         margin-top: 20px;
         opacity: 0;
-        animation: fadeIn 1.4s ease both 1.4s;
-        animation-play-state: paused;
+        animation: fadeUp 1.4s ease forwards 1.4s;
         text-align: center;
-      " class="s3b-fitfo">FITFO</div>
+      ">FITFO</div>
     </div>
   </div>
 
+  <!-- ══════════════════════════════
+       S4 — THE WORK
+  ══════════════════════════════ -->
   <div class="scene" id="s4">
     <div class="scene-bg kb-in"></div>
     <div class="scene-overlay grade-deep"></div>
@@ -490,6 +607,9 @@ html, body {
     </div>
   </div>
 
+  <!-- ══════════════════════════════
+       S5 — THE STANDARD
+  ══════════════════════════════ -->
   <div class="scene" id="s5">
     <div class="scene-bg kb-left"></div>
     <div class="scene-overlay grade-warm"></div>
@@ -500,6 +620,9 @@ html, body {
     </div>
   </div>
 
+  <!-- ══════════════════════════════
+       S6 — THE GYM
+  ══════════════════════════════ -->
   <div class="scene" id="s6">
     <div class="scene-bg kb-right"></div>
     <div class="scene-overlay grade-dark"></div>
@@ -510,6 +633,9 @@ html, body {
     </div>
   </div>
 
+  <!-- ══════════════════════════════
+       S7 — THE QUOTE
+  ══════════════════════════════ -->
   <div class="scene" id="s7">
     <div class="scene-bg kb-in"></div>
     <div class="scene-overlay grade-dark"></div>
@@ -522,6 +648,9 @@ html, body {
     </div>
   </div>
 
+  <!-- ══════════════════════════════
+       S8 — BRAND MARK
+  ══════════════════════════════ -->
   <div class="scene" id="s8">
     <div class="brand-wrap">
       <div class="b-i">I</div>
@@ -530,19 +659,77 @@ html, body {
       <div class="b-fitfo">FITFO</div>
     </div>
     <div class="b-date">iwill.world</div>
+    <div class="b-city">I Will FITFO LLC &nbsp;·&nbsp; Coral Gables, Florida</div>
   </div>
 
+  <!-- ══════════════════════════════
+       S9 — IWILL.WORLD
+  ══════════════════════════════ -->
   <div class="scene" id="s9">
-    <div style="position:absolute;inset:0;background:#080808;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;">
-      <div style="font-size:13px;letter-spacing:0.6em;text-transform:uppercase;color:rgba(197,165,90,0.5);opacity:0;animation:fadeIn 1.8s ease both 0.6s;animation-play-state:paused;" class="s9-url">iwill.world</div>
+    <div style="
+      position: absolute;
+      inset: 0;
+      background: #080808;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 10;
+    ">
+      <div style="
+        font-size: 13px;
+        letter-spacing: 0.6em;
+        text-transform: uppercase;
+        color: rgba(197,165,90,0.5);
+        opacity: 0;
+        animation: fadeIn 1.8s ease forwards 0.6s;
+      ">iwill.world</div>
     </div>
   </div>
 
+  <!-- ══════════════════════════════
+       S10 — MAY 4TH 2026 FINAL
+  ══════════════════════════════ -->
   <div class="scene" id="s10">
-    <div style="position:absolute;inset:0;background:#060606;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;">
-      <div style="font-size:clamp(52px,13vw,100px);font-weight:300;font-style:italic;color:var(--gold);letter-spacing:0.04em;opacity:0;animation:brandSlide 2s ease both 0.4s;animation-play-state:paused;line-height:1;" class="s10-date">May 4th</div>
-      <div style="font-size:clamp(16px,4vw,28px);font-weight:300;color:rgba(197,165,90,0.35);letter-spacing:0.3em;margin-top:16px;opacity:0;animation:fadeIn 1.4s ease both 1.4s;animation-play-state:paused;" class="s10-year">2026</div>
-      <div style="width:0;height:1px;background:var(--gold);margin:40px auto;opacity:0;animation:ruleExpand 1.2s ease both 2s;animation-play-state:paused;" class="s10-rule"></div>
+    <div style="
+      position: absolute;
+      inset: 0;
+      background: #060606;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 10;
+    ">
+      <div style="
+        font-size: clamp(52px, 13vw, 100px);
+        font-weight: 300;
+        font-style: italic;
+        color: var(--gold);
+        letter-spacing: 0.04em;
+        opacity: 0;
+        animation: brandSlide 2s cubic-bezier(0.16,1,0.3,1) forwards 0.4s;
+        line-height: 1;
+      ">May 4th</div>
+      <div style="
+        font-size: clamp(16px, 4vw, 28px);
+        font-weight: 300;
+        color: rgba(197,165,90,0.35);
+        letter-spacing: 0.3em;
+        margin-top: 16px;
+        opacity: 0;
+        animation: fadeUp 1.4s ease forwards 1.2s;
+      ">2026</div>
+      <div style="
+        width: 0;
+        height: 1px;
+        background: var(--gold);
+        margin: 40px auto;
+        opacity: 0;
+        animation: ruleExpand 1.2s ease forwards 1.8s;
+      "></div>
     </div>
   </div>
 
@@ -553,37 +740,75 @@ html, body {
 <script>
   const scenes = document.querySelectorAll('.scene');
   const prog = document.getElementById('prog');
+
   const dur = [5000, 5000, 4500, 3800, 7500, 4500, 5000, 7500, 5000, 5000, 8000];
   const total = dur.reduce((a,b) => a+b, 0);
   let cur = 0;
 
-  function activateScene(index) {
-    const scene = scenes[index];
-    scene.classList.add('active');
+  // Black transition overlay
+  const blackOut = document.createElement('div');
+  blackOut.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: #000000;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  `;
+  document.body.appendChild(blackOut);
+
+  function resetAnims(scene) {
     scene.querySelectorAll('*').forEach(el => {
-      const computed = window.getComputedStyle(el).animationName;
-      if (computed && computed !== 'none') {
-        el.style.animationPlayState = 'paused';
+      const inlineAnim = el.style.animation;
+      if (inlineAnim && inlineAnim !== 'none' && inlineAnim !== '') {
+        const saved = inlineAnim;
+        el.style.animation = 'none';
+        el.style.opacity = '0';
         void el.offsetWidth;
-        el.style.animationPlayState = 'running';
+        el.style.animation = saved;
       }
     });
+  }
+
+  function activateScene(index) {
+    scenes[index].classList.add('active');
+    resetAnims(scenes[index]);
+  }
+
+  function blackTransition(callback) {
+    // Snap to black
+    blackOut.style.transition = 'opacity 0.15s ease';
+    blackOut.style.opacity = '1';
+    setTimeout(() => {
+      // Switch scene while black
+      callback();
+      // Hold black for 500ms — clean cut point
+      setTimeout(() => {
+        blackOut.style.transition = 'opacity 0.25s ease';
+        blackOut.style.opacity = '0';
+      }, 500);
+    }, 150);
   }
 
   activateScene(0);
 
   function next() {
     if (cur >= scenes.length - 1) return;
-    scenes[cur].style.opacity = '0';
-    scenes[cur].style.transition = 'opacity 1s cubic-bezier(0.4,0,0.2,1)';
-    cur++;
+    const currentDur = dur[cur];
     setTimeout(() => {
-      activateScene(cur);
-      if (cur < scenes.length - 1) setTimeout(next, dur[cur]);
-    }, 300);
+      blackTransition(() => {
+        scenes[cur].style.opacity = '0';
+        cur++;
+        if (cur < scenes.length) {
+          activateScene(cur);
+          next();
+        }
+      });
+    }, currentDur);
   }
 
-  setTimeout(next, dur[0]);
+  next();
 
   let ms = 0;
   setInterval(() => {
