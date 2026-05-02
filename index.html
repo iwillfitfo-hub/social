@@ -6,82 +6,70 @@
   <title>Post Two — I WILL.</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: #0a0a0a;
+      background: #080808;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 24px;
+      gap: 22px;
       font-family: 'Cormorant Garamond', serif;
     }
 
     .reel {
+      position: relative;
       width: 340px;
       height: 604px;
-      background: #060606;
-      border: 1px solid #1a1a1a;
+      overflow: hidden;
+      border: 1px solid #161616;
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+
+    .text-overlay {
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 56px 44px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* grain */
-    .reel::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      z-index: 2;
       pointer-events: none;
-      z-index: 1;
     }
 
     .text-block {
       text-align: center;
-      position: relative;
-      z-index: 2;
+      width: 100%;
     }
 
-    .line {
+    .phrase {
+      display: block;
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300;
       color: #E8DCC8;
-      font-size: 21px;
-      line-height: 1.72;
+      font-size: 20px;
+      line-height: 1.5;
       letter-spacing: 0.045em;
       opacity: 0;
-      display: block;
+      margin-top: 5px;
     }
 
-    .line-2 { margin-top: 2px; }
-
-    .line-sig {
+    .phrase:first-child { margin-top: 0; }
+    .phrase.gap          { margin-top: 22px; }
+    .phrase.sig {
       margin-top: 38px;
       color: #C5A55A;
-      font-size: 17px;
-      letter-spacing: 0.16em;
+      font-size: 16px;
+      letter-spacing: 0.18em;
     }
 
-    /* progress */
-    .progress {
-      position: absolute;
-      bottom: 0; left: 0;
-      height: 1px;
-      background: #C5A55A;
-      width: 0%;
-      opacity: 0;
-      z-index: 3;
-    }
-
-    /* format label */
     .label {
       position: absolute;
       top: 12px; right: 14px;
@@ -92,11 +80,20 @@
       z-index: 3;
     }
 
-    /* replay */
+    .progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 1px;
+      background: #C5A55A;
+      width: 0%;
+      opacity: 0;
+      z-index: 4;
+    }
+
     .btn-replay {
       background: none;
-      border: 1px solid #252015;
-      color: #4a4238;
+      border: 1px solid #1e1a14;
+      color: #3d3428;
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300;
       font-size: 11px;
@@ -104,13 +101,15 @@
       text-transform: uppercase;
       padding: 9px 26px;
       cursor: pointer;
-      transition: border-color 0.4s, color 0.4s;
       opacity: 0;
+      pointer-events: none;
+      transition: border-color 0.4s, color 0.4s;
     }
 
-    .btn-replay.visible {
+    .btn-replay.show {
       opacity: 1;
-      transition: opacity 1s ease, border-color 0.4s, color 0.4s;
+      pointer-events: auto;
+      transition: opacity 1.2s ease, border-color 0.4s, color 0.4s;
     }
 
     .btn-replay:hover {
@@ -121,41 +120,181 @@
 </head>
 <body>
 
-  <div class="reel" id="reel">
+  <div class="reel">
+    <canvas id="c"></canvas>
     <span class="label">9 · 16</span>
-    <div class="progress" id="bar"></div>
-    <div class="text-block">
-      <span class="line" id="l1">The answers are incomplete.</span>
-      <span class="line line-2" id="l2">And still — it is yours to solve.</span>
-      <span class="line line-sig" id="ls">— W</span>
+    <div class="text-overlay">
+      <div class="text-block">
+        <span class="phrase"       id="p1">The answers are</span>
+        <span class="phrase"       id="p2">incomplete.</span>
+        <span class="phrase gap"   id="p3">And still</span>
+        <span class="phrase"       id="p4">—</span>
+        <span class="phrase"       id="p5">it is yours to solve.</span>
+        <span class="phrase sig"   id="p6">— W</span>
+      </div>
     </div>
+    <div class="progress" id="bar"></div>
   </div>
 
   <button class="btn-replay" id="replayBtn" onclick="run()">Replay</button>
 
   <script>
-    // All times in seconds from start
-    // 3s black — then timed to Cornfield Chase piano phrases
-    const T1  = 3.0 + 3.2;   // 6.2s  — first phrase
-    const T2  = 3.0 + 11.4;  // 14.4s — second phrase
-    const TS  = 3.0 + 20.0;  // 23.0s — melody opens
-    const DUR = 3.0 + 26.0;  // total ~29s
+    // ── Canvas setup ───────────────────────────────────────────────────
+    const canvas = document.getElementById('c');
+    const ctx    = canvas.getContext('2d');
+    const W = 340, H = 604;
+    canvas.width  = W;
+    canvas.height = H;
 
-    const FADE = 4400; // ms — slow breath
-    const EASE = 'cubic-bezier(0.22, 0, 0.78, 1)';
+    // ── Stars ──────────────────────────────────────────────────────────
+    let stars = [];
 
-    let raf, startMs, done = false;
-
-    function fadeIn(el) {
-      el.style.transition = `opacity ${FADE}ms ${EASE}`;
-      el.style.opacity    = '1';
+    function initStars() {
+      stars = Array.from({ length: 300 }, () => ({
+        x:  (Math.random() - 0.5) * W * 3,
+        y:  (Math.random() - 0.5) * H * 3,
+        z:  Math.random() * W,
+        b:  0.25 + Math.random() * 0.55,    // brightness
+        sz: 0.35 + Math.random() * 1.1      // base size
+      }));
     }
 
+    // ── Zoom speed curve ───────────────────────────────────────────────
+    // 3s black → slow galaxy drift → accelerating zoom → peaks at — W → settles
+    function zoomSpeed(t) {
+      if (t < 3.0)  return 0;
+      if (t < 5.5)  return 0.15 + (t - 3.0) / 2.5 * 0.25;   // materialise 0.15→0.40
+      if (t < 24.5) return 0.40 + (t - 5.5) / 19.0 * 3.0;   // 0.40→3.40 slow build
+      if (t < 27.0) return 3.40 - (t - 24.5) / 2.5 * 1.8;   // decelerate after — W
+      return 1.6;                                              // cruise
+    }
+
+    // ── Background tint (near-black throughout, barely hints blue near end) ──
+    function bgFill(t) {
+      if (t < 22) return [6, 6, 8];
+      if (t < 26) {
+        const p = (t - 22) / 4;
+        return [6, Math.round(6 + p * 2), Math.round(8 + p * 5)];
+      }
+      return [6, 8, 13];
+    }
+
+    // ── Draw one frame ─────────────────────────────────────────────────
+    function drawFrame(t, speed) {
+      const [r, g, b] = bgFill(t);
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillRect(0, 0, W, H);
+
+      const cx = W / 2, cy = H / 2;
+
+      // Star global alpha: 0 while black, fades in 3→5.5s
+      const starA = t < 3 ? 0 : Math.min(1, (t - 3) / 2.5);
+
+      stars.forEach(star => {
+        star.z -= speed;
+        if (star.z <= 0) {
+          star.x  = (Math.random() - 0.5) * W * 3;
+          star.y  = (Math.random() - 0.5) * H * 3;
+          star.z  = W;
+        }
+
+        const sx  = (star.x / star.z) * W + cx;
+        const sy  = (star.y / star.z) * H + cy;
+        if (sx < -4 || sx > W + 4 || sy < -4 || sy > H + 4) return;
+
+        const depth = 1 - star.z / W;
+        const sz    = Math.max(0.15, depth * star.sz);
+        const alpha = depth * star.b * starA;
+
+        // Motion streaks when zooming fast
+        if (speed > 1.2 && alpha > 0.05) {
+          const streakLen = Math.min(12, speed * 2.2);
+          const dx = sx - cx, dy = sy - cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > 0) {
+            const nx = dx / dist, ny = dy / dist;
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(232,220,200,${alpha * 0.45})`;
+            ctx.lineWidth   = Math.max(0.3, sz * 0.55);
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(sx - nx * streakLen, sy - ny * streakLen);
+            ctx.stroke();
+          }
+        }
+
+        // Star dot
+        ctx.beginPath();
+        ctx.arc(sx, sy, sz, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(232,220,200,${alpha})`;
+        ctx.fill();
+      });
+
+      // Vignette — frames the text
+      const vig = ctx.createRadialGradient(cx, cy, cx * 0.25, cx, cy, cx * 1.55);
+      vig.addColorStop(0, 'rgba(0,0,0,0)');
+      vig.addColorStop(1, 'rgba(0,0,0,0.62)');
+      ctx.fillStyle = vig;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    // ── Text timing — mapped to Cornfield Chase piano notes ────────────
+    // 3s black + note positions in the opening phrase (seconds)
+    const PHRASES = [
+      { id: 'p1', t:  6.5 },   // first note lands
+      { id: 'p2', t:  9.2 },   // second note
+      { id: 'p3', t: 12.6 },   // third note
+      { id: 'p4', t: 16.1 },   // fourth — the pause beat
+      { id: 'p5', t: 19.8 },   // fifth note
+      { id: 'p6', t: 24.5 },   // last intro note — W appears, melody follows
+    ];
+
+    const FADE_MS = 4200;
+    const EASE    = 'cubic-bezier(0.18, 0, 0.82, 1)';
+    const TOTAL   = 30;
+
+    // ── Animation loop ─────────────────────────────────────────────────
+    let raf, startMs, triggered = {};
+
+    function tick() {
+      const t     = (performance.now() - startMs) / 1000;
+      const speed = zoomSpeed(t);
+
+      drawFrame(t, speed);
+
+      // Reveal phrases
+      PHRASES.forEach(({ id, t: mark }) => {
+        if (!triggered[id] && t >= mark) {
+          const el = document.getElementById(id);
+          el.style.transition = `opacity ${FADE_MS}ms ${EASE}`;
+          el.style.opacity    = '1';
+          triggered[id]       = true;
+        }
+      });
+
+      // Progress bar
+      if (t > 3) {
+        const bar = document.getElementById('bar');
+        bar.style.opacity = '0.3';
+        bar.style.width   = Math.min(((t - 3) / (TOTAL - 3)) * 100, 100) + '%';
+      }
+
+      const lastT  = PHRASES[PHRASES.length - 1].t;
+      const finished = t > lastT + (FADE_MS / 1000) + 0.8;
+
+      if (!finished) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        document.getElementById('replayBtn').classList.add('show');
+      }
+    }
+
+    // ── Reset ──────────────────────────────────────────────────────────
     function reset() {
       cancelAnimationFrame(raf);
-      done = false;
+      triggered = {};
+      initStars();
 
-      ['l1','l2','ls'].forEach(id => {
+      PHRASES.forEach(({ id }) => {
         const el = document.getElementById(id);
         el.style.transition = 'none';
         el.style.opacity    = '0';
@@ -166,56 +305,21 @@
       bar.style.width   = '0%';
       bar.style.opacity = '0';
 
-      document.getElementById('replayBtn').classList.remove('visible');
+      ctx.fillStyle = 'rgb(6,6,8)';
+      ctx.fillRect(0, 0, W, H);
+
+      document.getElementById('replayBtn').classList.remove('show');
     }
 
     function run() {
       reset();
-
-      // brief pause to let reset settle before restarting
       setTimeout(() => {
         startMs = performance.now();
-        const triggered = { l1: false, l2: false, ls: false };
-
-        function tick() {
-          const t   = (performance.now() - startMs) / 1000;
-          const bar = document.getElementById('bar');
-
-          if (!triggered.l1 && t >= T1) {
-            fadeIn(document.getElementById('l1'));
-            triggered.l1 = true;
-          }
-          if (!triggered.l2 && t >= T2) {
-            fadeIn(document.getElementById('l2'));
-            triggered.l2 = true;
-          }
-          if (!triggered.ls && t >= TS) {
-            fadeIn(document.getElementById('ls'));
-            triggered.ls = true;
-          }
-
-          // progress bar
-          bar.style.opacity = '0.35';
-          bar.style.width   = Math.min((t / DUR) * 100, 100) + '%';
-
-          const allIn   = triggered.l1 && triggered.l2 && triggered.ls;
-          const settled = t > TS + (FADE / 1000) + 1.0;
-
-          if (!allIn || !settled) {
-            raf = requestAnimationFrame(tick);
-          } else {
-            document.getElementById('replayBtn').classList.add('visible');
-          }
-        }
-
         raf = requestAnimationFrame(tick);
-      }, 40);
+      }, 60);
     }
 
-    // Auto-play on load
-    window.addEventListener('load', () => {
-      setTimeout(run, 200);
-    });
+    window.addEventListener('load', () => setTimeout(run, 200));
   </script>
 
 </body>
