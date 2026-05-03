@@ -474,9 +474,9 @@ html, body {
     <div class="scene-overlay grade-cosmos"></div>
     <div class="scene-content">
       <p class="t-label">Where the answers live</p>
-      <p class="t-italic a1">Not in the noise.</p>
-      <p class="t-italic a2" style="margin-top:28px;">Not in the speed.</p>
-      <p class="t-italic a3" style="margin-top:28px;">In the vast, uncomfortable quiet.</p>
+      <p class="t-italic a1">Every man carries something</p>
+      <p class="t-italic a2" style="margin-top:28px;">he has not yet found the words for.</p>
+      <p class="t-italic a3" style="margin-top:44px;">This is for him.</p>
     </div>
   </div>
 
@@ -487,8 +487,8 @@ html, body {
     <div class="scene-bg kb-in"></div>
     <div class="scene-overlay grade-deep"></div>
     <div class="scene-content">
-      <p class="t-main a1">Every man carries something</p>
-      <p class="t-italic a2" style="margin-top:20px;">he has not yet found the words for.</p>
+      <p class="t-italic a1">In the vast, uncomfortable quiet.</p>
+      <p class="t-main a2" style="margin-top:40px;">Something waits.</p>
     </div>
   </div>
 
@@ -514,10 +514,10 @@ html, body {
     <div class="scene-bg kb-slow"></div>
     <div class="scene-overlay grade-fog"></div>
     <div class="scene-content">
-      <p class="t-italic a1">The answers are incomplete.</p>
-      <div class="g-rule"></div>
-      <p class="t-main a2">And still —</p>
-      <p class="t-main t-gold a3" style="margin-top:16px; font-size: clamp(28px, 6.5vw, 50px);">it is yours to solve.</p>
+      <p class="t-italic a1">There comes a moment</p>
+      <p class="t-main a2" style="margin-top:24px;">every man knows.</p>
+      <p class="t-italic a3" style="margin-top:44px;">When the quiet gets loud enough</p>
+      <p class="t-italic a4" style="margin-top:16px;">to hear the right questions.</p>
     </div>
   </div>
 
@@ -536,16 +536,68 @@ html, body {
   </div>
 
   <!-- ══════════════════════════════
-       S6 — THE QUOTE
+       S6 — THE QUOTE — IMPACT
   ══════════════════════════════ -->
   <div class="scene" id="s6">
     <div class="scene-bg kb-in"></div>
     <div class="scene-overlay grade-dark"></div>
-    <div class="scene-content" style="justify-content:center; padding-bottom:0;">
+    <div class="scene-content" style="justify-content:center; padding:0 40px;">
       <div class="quote-block">
-        <span class="q1">The answers are incomplete.</span>
-        <span class="q2">And still — it is yours to solve.</span>
-        <span class="q-sig">— W</span>
+        <span class="q1" style="
+          font-size: clamp(36px, 9vw, 64px);
+          font-weight: 400;
+          color: var(--cream);
+          display: block;
+          line-height: 1.2;
+          letter-spacing: 0.01em;
+        ">The answers</span>
+        <span class="q1" style="
+          font-size: clamp(36px, 9vw, 64px);
+          font-weight: 400;
+          color: var(--cream);
+          display: block;
+          line-height: 1.2;
+          font-style: italic;
+          letter-spacing: 0.01em;
+          animation-delay: 0.6s;
+          opacity: 0;
+          animation: fadeIn 2s ease both 0.6s;
+          animation-play-state: paused;
+        ">are incomplete.</span>
+        <div style="
+          width: 0;
+          height: 1px;
+          background: var(--gold);
+          margin: 36px auto;
+          opacity: 0;
+          animation: ruleExpand 1.2s ease both 1.8s;
+          animation-play-state: paused;
+        " class="q-rule-inner"></div>
+        <span class="q2" style="
+          font-size: clamp(28px, 7vw, 52px);
+          font-weight: 400;
+          font-style: italic;
+          color: var(--muted);
+          display: block;
+          line-height: 1.3;
+          margin-top: 0;
+        ">And still —</span>
+        <span class="q2" style="
+          font-size: clamp(28px, 7vw, 52px);
+          font-weight: 400;
+          color: var(--gold);
+          display: block;
+          line-height: 1.3;
+          margin-top: 8px;
+          animation-delay: 3.4s;
+          opacity: 0;
+          animation: fadeIn 2s ease both 3.4s;
+          animation-play-state: paused;
+        ">it is yours to solve.</span>
+        <span class="q-sig" style="
+          font-size: 30px;
+          margin-top: 52px;
+        ">— W</span>
       </div>
     </div>
   </div>
@@ -582,14 +634,13 @@ html, body {
   const prog = document.getElementById('prog');
   const blackout = document.getElementById('blackout');
 
-  // Scene durations in ms — timed to breathe with Interstellar
   const dur = [
-    7000,  // S1 — deep space opening — slow build
-    6000,  // S2 — every man carries something
-    8000,  // S3 — not more noise — four lines now
-    7000,  // S4 — the answers are incomplete — THE KEY SCENE
-    9000,  // S5 — take it — four lines needs more room
-    8000,  // S6 — quote alone
+    7000,  // S1 — every man carries something
+    6000,  // S2 — something waits
+    8000,  // S3 — not more noise
+    7000,  // S4 — the horizon
+    9000,  // S5 — take it
+    11000, // S6 — THE QUOTE — needs full time to build and land
     7000,  // S7 — brand mark
     8000,  // S8 — May 4th
   ];
@@ -605,6 +656,10 @@ html, body {
         el.style.opacity = '0';
         void el.offsetWidth;
         el.style.animation = anim;
+      }
+      // Also reset and run any paused inline animation-play-state
+      if (el.style.animationPlayState === 'paused') {
+        el.style.animationPlayState = 'running';
       }
     });
   }
