@@ -79,6 +79,7 @@ html, body {
   position: absolute;
   inset: 0;
   opacity: 0;
+  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
@@ -585,9 +586,9 @@ html, body {
   const dur = [
     7000,  // S1 — deep space opening — slow build
     6000,  // S2 — every man carries something
-    6500,  // S3 — he needs an hour
+    8000,  // S3 — not more noise — four lines now
     7000,  // S4 — the answers are incomplete — THE KEY SCENE
-    7000,  // S5 — take it
+    9000,  // S5 — take it — four lines needs more room
     8000,  // S6 — quote alone
     7000,  // S7 — brand mark
     8000,  // S8 — May 4th
@@ -613,16 +614,13 @@ html, body {
     resetAnims(scenes[index]);
   }
 
-  function blackTransition(callback) {
-    blackout.style.transition = 'opacity 0.2s ease';
-    blackout.style.opacity = '1';
+  function dissolveTransition(callback) {
+    // Slow crossfade — no black cut
+    scenes[cur].style.transition = 'opacity 1.8s cubic-bezier(0.4,0,0.2,1)';
+    scenes[cur].style.opacity = '0';
     setTimeout(() => {
       callback();
-      setTimeout(() => {
-        blackout.style.transition = 'opacity 0.3s ease';
-        blackout.style.opacity = '0';
-      }, 500);
-    }, 200);
+    }, 400);
   }
 
   activateScene(0);
@@ -631,8 +629,7 @@ html, body {
     if (cur >= scenes.length - 1) return;
     const currentDur = dur[cur];
     setTimeout(() => {
-      blackTransition(() => {
-        scenes[cur].style.opacity = '0';
+      dissolveTransition(() => {
         cur++;
         if (cur < scenes.length) {
           activateScene(cur);
