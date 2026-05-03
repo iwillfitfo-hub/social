@@ -3,705 +3,1493 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I WILL. — Post Two</title>
+<title>I WILL. — Brand Style Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
 <style>
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --black: #040404;
-  --charcoal: #1A1A1A;
+  --black: #0D0D0D;
+  --charcoal: #1C1C1C;
+  --mid: #3A3530;
   --cream: #E8DCC8;
   --gold: #C5A55A;
-  --muted: #B8A898;
+  --muted: #9A8E7E;
+  --dim: #6B6055;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+body {
   background: var(--black);
+  color: var(--cream);
   font-family: 'Cormorant Garamond', Georgia, serif;
+  line-height: 1.6;
 }
 
-.film {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: var(--black);
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 60px;
 }
 
-/* GRAIN */
-.grain {
-  position: fixed;
-  inset: -50%;
-  width: 200%;
-  height: 200%;
-  z-index: 90;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  animation: grain 0.12s steps(1) infinite;
+.section {
+  padding: 80px 0;
+  border-top: 1px solid var(--mid);
 }
 
-@keyframes grain {
-  0%   { transform: translate(0,0); }
-  20%  { transform: translate(-5%,-5%); }
-  40%  { transform: translate(5%,10%); }
-  60%  { transform: translate(15%,0); }
-  80%  { transform: translate(-10%,5%); }
-  100% { transform: translate(5%,-10%); }
+.section:first-child {
+  border-top: none;
 }
 
-/* VIGNETTE */
-.vignette {
-  position: fixed;
-  inset: 0;
-  z-index: 89;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 50% 50%,
-    transparent 20%,
-    rgba(0,0,0,0.55) 65%,
-    rgba(0,0,0,0.95) 100%
-  );
-}
-
-/* LETTERBOX */
-.lb { position: fixed; left: 0; right: 0; z-index: 88; background: var(--black); }
-.lb-top { top: 0; height: 5%; }
-.lb-bottom { bottom: 0; height: 5%; }
-
-/* SCENES */
-.scene {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
-
-.scene.active { opacity: 1; }
-
-.scene-bg {
-  position: absolute;
-  inset: -5%;
-  width: 110%;
-  height: 110%;
-  background-size: cover;
-  background-position: center;
-}
-
-.scene-overlay { position: absolute; inset: 0; }
-
-/* GRADES */
-.grade-cosmos  { background: rgba(2, 4, 18, 0.65); }
-.grade-deep    { background: rgba(2, 5, 15, 0.72); }
-.grade-dusk    { background: rgba(8, 4, 2, 0.55); }
-.grade-dark    { background: rgba(0, 0, 0, 0.68); }
-.grade-fog     { background: rgba(4, 8, 12, 0.60); }
-
-/* KEN BURNS */
-.kb-in    { animation: kbIn  12s ease-in-out forwards; }
-.kb-out   { animation: kbOut 12s ease-in-out forwards; }
-.kb-slow  { animation: kbSlow 14s ease-in-out forwards; }
-
-@keyframes kbIn   { from { transform: scale(1.06); } to { transform: scale(1.0); } }
-@keyframes kbOut  { from { transform: scale(1.0);  } to { transform: scale(1.06); } }
-@keyframes kbSlow { from { transform: scale(1.04) translate(1%, 0); } to { transform: scale(1.0) translate(-1%, 0); } }
-
-/* CONTENT */
-.scene-content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 12% 48px 10% 48px;
-  text-align: center;
-  z-index: 10;
-}
-
-/* TEXT */
-.t-label {
+.section-label {
   font-size: 10px;
-  letter-spacing: 0.7em;
+  letter-spacing: 0.6em;
   text-transform: uppercase;
-  color: rgba(197,165,90,0.75);
-  margin-bottom: 20px;
-  opacity: 0;
-  animation: fadeIn 1s ease both;
-  animation-play-state: paused;
-  animation-delay: 0.4s;
-}
-
-.scene.active .t-label { animation-play-state: running; }
-
-.t-main {
-  font-size: clamp(26px, 6vw, 46px);
-  font-weight: 400;
-  color: var(--cream);
-  line-height: 1.4;
-  letter-spacing: 0.01em;
-  opacity: 0;
-}
-
-.t-italic {
-  font-style: italic;
-  font-weight: 400;
-  color: var(--muted);
-  font-size: clamp(22px, 5vw, 38px);
-  line-height: 1.5;
-  opacity: 0;
-}
-
-.t-gold {
   color: var(--gold);
-  font-weight: 400;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.t-small {
-  font-size: clamp(14px, 2.5vw, 20px);
-  font-weight: 400;
-  font-style: italic;
-  color: var(--muted);
-  line-height: 1.7;
-  opacity: 0;
-}
-
-/* STAGGER */
-.a1 { animation: fadeIn 1.8s ease both; animation-delay: 0.8s;  animation-play-state: paused; }
-.a2 { animation: fadeIn 1.8s ease both; animation-delay: 2.2s;  animation-play-state: paused; }
-.a3 { animation: fadeIn 1.8s ease both; animation-delay: 3.8s;  animation-play-state: paused; }
-.a4 { animation: fadeIn 1.8s ease both; animation-delay: 5.4s;  animation-play-state: paused; }
-
-.scene.active .a1,
-.scene.active .a2,
-.scene.active .a3,
-.scene.active .a4 { animation-play-state: running; }
-
-/* GOLD RULE */
-.g-rule {
-  width: 0;
+.section-label::after {
+  content: '';
+  flex: 1;
   height: 1px;
-  background: var(--gold);
-  margin: 28px auto;
-  opacity: 0;
-  animation: ruleExpand 1.4s ease both;
-  animation-delay: 1.6s;
-  animation-play-state: paused;
+  background: var(--mid);
 }
 
-.scene.active .g-rule { animation-play-state: running; }
+/* ═══════════════════════════════════════════
+   COVER
+═══════════════════════════════════════════ */
 
-@keyframes ruleExpand {
-  from { width: 0; opacity: 0; }
-  to   { width: 44px; opacity: 1; }
-}
-
-/* QUOTE SCENE */
-.quote-block {
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 80px 60px;
   position: relative;
-  z-index: 10;
-  text-align: center;
-  padding: 0 44px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--mid);
 }
 
-.q1 {
-  display: block;
-  font-size: clamp(30px, 7.5vw, 54px);
-  font-weight: 400;
-  color: var(--cream);
-  line-height: 1.25;
-  letter-spacing: 0.02em;
-  opacity: 0;
-  animation: fadeIn 2s ease both 0.6s;
-  animation-play-state: paused;
-}
-
-.q2 {
-  display: block;
-  font-size: clamp(24px, 6vw, 42px);
-  font-weight: 400;
-  font-style: italic;
-  color: var(--muted);
-  line-height: 1.35;
-  letter-spacing: 0.02em;
-  margin-top: 8px;
-  opacity: 0;
-  animation: fadeIn 2s ease both 1.8s;
-  animation-play-state: paused;
-}
-
-.q-sig {
-  display: block;
-  font-size: 26px;
-  font-style: italic;
-  color: var(--gold);
-  margin-top: 44px;
-  letter-spacing: 0.12em;
-  opacity: 0;
-  animation: fadeIn 1.5s ease both 3.2s;
-  animation-play-state: paused;
-}
-
-.scene.active .q1,
-.scene.active .q2,
-.scene.active .q-sig { animation-play-state: running; }
-
-/* BRAND MARK */
-.brand-wrap {
+.cover-bg {
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  z-index: 10;
-}
-
-.b-i {
-  font-size: clamp(100px, 22vw, 190px);
+  font-size: 420px;
   font-weight: 300;
-  color: var(--cream);
-  line-height: 0.82;
-  letter-spacing: -0.02em;
-  opacity: 0;
-  animation: blurIn 2s ease both 0.3s;
-  animation-play-state: paused;
-}
-
-.b-will {
-  font-size: clamp(100px, 22vw, 190px);
-  font-weight: 300;
-  color: var(--cream);
-  line-height: 0.82;
-  letter-spacing: -0.02em;
-  opacity: 0;
-  animation: blurIn 2s ease both 0.8s;
-  animation-play-state: paused;
-}
-
-.scene.active .b-i,
-.scene.active .b-will { animation-play-state: running; }
-
-.b-period { color: var(--gold); }
-
-.b-rule {
-  width: 0;
-  height: 1px;
-  background: var(--gold);
-  margin: 22px auto;
-  opacity: 0;
-  animation: ruleExpand 1.2s ease both 1.4s;
-  animation-play-state: paused;
-}
-
-.scene.active .b-rule { animation-play-state: running; }
-
-.b-fitfo {
-  font-size: clamp(32px, 7vw, 58px);
-  font-weight: 300;
-  letter-spacing: 0.75em;
-  padding-left: 0.75em;
-  text-transform: uppercase;
-  color: rgba(197,165,90,0.4);
-  opacity: 0;
-  animation: fadeIn 1.5s ease both 1.8s;
-  animation-play-state: paused;
-}
-
-.scene.active .b-fitfo { animation-play-state: running; }
-
-/* DATE SCENE */
-.date-wrap {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  z-index: 10;
-}
-
-.d-may {
-  font-size: clamp(48px, 12vw, 96px);
-  font-weight: 300;
-  font-style: italic;
-  color: var(--gold);
-  letter-spacing: 0.04em;
-  line-height: 1;
-  opacity: 0;
-  animation: blurIn 2.2s ease both 0.4s;
-  animation-play-state: paused;
-}
-
-.d-year {
-  font-size: clamp(14px, 3.5vw, 24px);
-  font-weight: 300;
-  color: rgba(197,165,90,0.32);
-  letter-spacing: 0.35em;
-  margin-top: 12px;
-  opacity: 0;
-  animation: fadeIn 1.4s ease both 1.4s;
-  animation-play-state: paused;
-}
-
-.d-rule {
-  width: 0;
-  height: 1px;
-  background: var(--gold);
-  margin: 36px auto;
-  opacity: 0;
-  animation: ruleExpand 1.2s ease both 2s;
-  animation-play-state: paused;
-}
-
-.scene.active .d-may,
-.scene.active .d-year,
-.scene.active .d-rule { animation-play-state: running; }
-
-/* PHOTO BACKGROUNDS */
-
-/* S1 — Deep space nebula — vast and cosmic */
-#s1 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%),
-    url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1080&q=85&auto=format&fit=crop');
-  background-position: center center;
-}
-
-/* S2 — Milky way stars — every man under the same sky */
-#s2 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.78) 100%),
-    url('https://images.unsplash.com/photo-1436891620584-47fd0e565afb?w=1080&q=85&auto=format&fit=crop');
-  background-position: center 40%;
-}
-
-/* S3 — Man standing alone at night water — internal and still */
-#s3 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.72) 100%),
-    url('https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1080&q=85&auto=format&fit=crop');
-  background-position: center 35%;
-}
-
-/* S4 — Ocean horizon at dusk — vast and incomplete */
-#s4 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.75) 100%),
-    url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1080&q=85&auto=format&fit=crop');
-  background-position: center 45%;
-}
-
-/* S5 — Galaxy and cosmos — the space between becoming */
-#s5 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.80) 100%),
-    url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1080&q=85&auto=format&fit=crop');
-  background-position: center center;
-}
-
-/* S6 — Quote — deep starfield */
-#s6 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.88) 100%),
-    url('https://images.unsplash.com/photo-1464802686167-b939a6910659?w=1080&q=85&auto=format&fit=crop');
-  opacity: 0.6;
-}
-
-/* S7 — Brand mark — pure charcoal */
-#s7 { background: #141414; }
-
-/* S8 — Date — pure black */
-#s8 { background: #050505; }
-
-/* KEYFRAMES */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes blurIn {
-  from { opacity: 0; filter: blur(8px); }
-  to   { opacity: 1; filter: blur(0); }
-}
-
-/* BLACK TRANSITION OVERLAY */
-#blackout {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  z-index: 200;
-  opacity: 0;
+  color: rgba(197,165,90,0.03);
+  letter-spacing: -0.05em;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  white-space: nowrap;
   pointer-events: none;
 }
 
-/* PROGRESS */
-.prog {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  height: 1.5px;
-  width: 0;
-  background: linear-gradient(to right, rgba(197,165,90,0.1), rgba(197,165,90,0.5));
-  z-index: 100;
+.cover-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cover-doc-label {
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.cover-year {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--dim);
+}
+
+.cover-center {
+  position: relative;
+  z-index: 1;
+}
+
+.cover-pre {
+  font-size: 11px;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 40px;
+}
+
+.cover-title {
+  font-size: clamp(80px, 14vw, 160px);
+  font-weight: 300;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+}
+
+.cover-title .line { display: block; color: var(--cream); }
+.cover-title .period { color: var(--gold); }
+
+.cover-rule {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 48px 0 32px;
+}
+
+.cover-rule-line { width: 60px; height: 1px; background: var(--gold); }
+.cover-rule-text {
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cover-sub {
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.8;
+}
+
+.cover-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.cover-address {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  line-height: 1.8;
+}
+
+.cover-fitfo {
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════
+   BRAND MARK
+═══════════════════════════════════════════ */
+
+.mark-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--mid);
+  margin-bottom: 60px;
+}
+
+.mark-cell {
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.mark-cell.dark { background: var(--black); }
+.mark-cell.charcoal { background: var(--charcoal); }
+.mark-cell.cream-bg { background: var(--cream); }
+.mark-cell.gold-bg { background: var(--gold); }
+
+.mark-display {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.mark-i {
+  display: block;
+  font-weight: 300;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+}
+
+.mark-will {
+  display: block;
+  font-weight: 300;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+}
+
+.mark-period-gold { color: var(--gold); }
+.mark-period-dark { color: var(--black); }
+.mark-period-cream { color: var(--cream); }
+
+.mark-size-large { font-size: 80px; }
+.mark-size-medium { font-size: 56px; }
+
+.mark-label {
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-align: center;
+}
+
+.mark-label.on-light { color: rgba(28,28,28,0.4); }
+.mark-label.on-gold { color: rgba(13,13,13,0.5); }
+
+/* Don't use zone */
+.dont-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.dont-item {
+  padding: 32px;
+  background: var(--charcoal);
+  border: 1px solid var(--mid);
+  position: relative;
+}
+
+.dont-item::before {
+  content: '✕';
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 10px;
+  color: rgba(197,165,90,0.3);
+  letter-spacing: 0;
+}
+
+.dont-mark {
+  font-size: 36px;
+  font-weight: 300;
+  opacity: 0.3;
+  margin-bottom: 16px;
+}
+
+.dont-note {
+  font-size: 12px;
+  color: var(--dim);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════
+   COLOR SYSTEM
+═══════════════════════════════════════════ */
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--mid);
+  margin-bottom: 60px;
+}
+
+.color-swatch {
+  padding: 0;
+}
+
+.swatch-block {
+  height: 160px;
+}
+
+.swatch-info {
+  padding: 24px 20px;
+  background: var(--charcoal);
+}
+
+.swatch-name {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.swatch-hex {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.swatch-role {
+  font-size: 11px;
+  color: var(--dim);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.color-usage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.color-usage-item {
+  padding: 32px;
+  background: var(--charcoal);
+  border: 1px solid var(--mid);
+}
+
+.usage-label {
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.usage-text {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════════ */
+
+.type-specimen {
+  margin-bottom: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--mid);
+}
+
+.type-specimen:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.type-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.type-name {
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.type-spec {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-align: right;
+  line-height: 1.8;
+}
+
+.type-display-xl {
+  font-size: clamp(64px, 12vw, 120px);
+  font-weight: 300;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+}
+
+.type-display-xl .period { color: var(--gold); }
+
+.type-display-lg {
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--cream);
+}
+
+.type-heading {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--cream);
+}
+
+.type-subheading {
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.type-body {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.9;
+  max-width: 680px;
+}
+
+.type-label {
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.type-caption {
+  font-size: 13px;
+  color: var(--dim);
+  font-style: italic;
+  letter-spacing: 0.05em;
+}
+
+/* ═══════════════════════════════════════════
+   VOICE
+═══════════════════════════════════════════ */
+
+.voice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--mid);
+  margin-bottom: 60px;
+}
+
+.voice-cell {
+  padding: 48px;
+  background: var(--charcoal);
+}
+
+.voice-cell-label {
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.voice-cell-label.good { color: rgba(197,165,90,0.7); }
+.voice-cell-label.bad { color: rgba(150,80,80,0.7); }
+
+.voice-example {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--cream);
+  font-style: italic;
+}
+
+.voice-example.bad-text {
+  color: rgba(232,220,200,0.35);
+  text-decoration: line-through;
+  text-decoration-color: rgba(150,80,80,0.3);
+}
+
+.voice-note {
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: 16px;
+  letter-spacing: 0.05em;
+}
+
+.signature-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sig-line {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--mid);
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.sig-line:last-child { border-bottom: none; }
+
+.sig-dash {
+  width: 20px;
+  height: 1px;
+  background: var(--gold);
+  margin-top: 14px;
+  flex-shrink: 0;
+}
+
+.sig-text {
+  font-size: clamp(17px, 2.5vw, 24px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════
+   PRODUCT
+═══════════════════════════════════════════ */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.product-card {
+  background: var(--charcoal);
+  border: 1px solid var(--mid);
+  overflow: hidden;
+}
+
+.product-card-top {
+  padding: 48px;
+  border-bottom: 1px solid var(--mid);
+}
+
+.product-num {
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.product-name {
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.product-sub {
+  font-size: 14px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.product-card-bottom {
+  padding: 32px 48px;
+}
+
+.product-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(58,53,48,0.5);
+  font-size: 14px;
+}
+
+.product-detail:last-child { border-bottom: none; }
+
+.detail-key {
+  color: var(--dim);
+  letter-spacing: 0.05em;
+}
+
+.detail-val {
+  color: var(--cream);
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════════════════
+   FOUNDING 50
+═══════════════════════════════════════════ */
+
+.founding-block {
+  background: var(--charcoal);
+  border: 1px solid var(--mid);
+  border-left: 3px solid var(--gold);
+  padding: 48px;
+  margin-bottom: 40px;
+}
+
+.founding-title {
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 24px;
+}
+
+.founding-desc {
+  font-size: 17px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.9;
+  max-width: 700px;
+}
+
+.founding-chapters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--mid);
+}
+
+.chapter {
+  padding: 32px;
+  background: var(--charcoal);
+}
+
+.chapter-status {
+  font-size: 9px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.chapter-status.open { color: var(--gold); }
+.chapter-status.coming { color: var(--dim); }
+
+.chapter-name {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+.chapter-name.open-name { color: var(--cream); }
+.chapter-name.coming-name { color: var(--dim); }
+
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--mid);
+}
+
+.contact-cell {
+  padding: 40px;
+  background: var(--charcoal);
+}
+
+.contact-type {
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.contact-value {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════
+   BACK COVER
+═══════════════════════════════════════════ */
+
+.back-cover {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 60px;
+  border-top: 1px solid var(--mid);
+  position: relative;
+  overflow: hidden;
+}
+
+.back-cover-bg {
+  position: absolute;
+  font-size: 300px;
+  font-weight: 300;
+  color: rgba(197,165,90,0.025);
+  letter-spacing: -0.05em;
+  user-select: none;
+  pointer-events: none;
+}
+
+.back-mark-i {
+  font-size: clamp(80px, 15vw, 140px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+}
+
+.back-mark-will {
+  font-size: clamp(80px, 15vw, 140px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.back-rule {
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.back-fitfo {
+  font-size: 14px;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.45);
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.back-quote {
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.back-address {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dim);
+  position: relative;
+  z-index: 1;
+}
+
+@media print {
+  .cover { page-break-after: always; }
+  .section { page-break-inside: avoid; }
+}
+
+@media (max-width: 768px) {
+  .page { padding: 40px 24px; }
+  .cover { padding: 40px 24px; }
+  .mark-grid { grid-template-columns: 1fr; }
+  .color-grid { grid-template-columns: repeat(3, 1fr); }
+  .voice-grid { grid-template-columns: 1fr; }
+  .product-grid { grid-template-columns: 1fr; }
+  .founding-chapters { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .dont-grid { grid-template-columns: 1fr; }
+  .type-meta { flex-direction: column; gap: 8px; }
+  .color-usage { grid-template-columns: 1fr; }
 }
 
 </style>
 </head>
 <body>
 
-<div class="film">
+<!-- ═══════════════════════════════════════════
+     COVER
+═══════════════════════════════════════════ -->
 
-  <div class="lb lb-top"></div>
-  <div class="lb lb-bottom"></div>
-  <div class="grain"></div>
-  <div class="vignette"></div>
-  <div id="blackout"></div>
+<div class="cover">
+  <div class="cover-bg">FITFO</div>
 
-  <!-- ══════════════════════════════
-       S1 — DEEP SPACE / OPENING
-  ══════════════════════════════ -->
-  <div class="scene" id="s1">
-    <div class="scene-bg kb-slow"></div>
-    <div class="scene-overlay grade-cosmos"></div>
-    <div class="scene-content">
-      <p class="t-label">Where the answers live</p>
-      <p class="t-italic a1">Every man carries something</p>
-      <p class="t-italic a2" style="margin-top:28px;">he has not yet found the words for.</p>
-      <p class="t-italic a3" style="margin-top:44px;">This is for him.</p>
-    </div>
+  <div class="cover-top">
+    <span class="cover-doc-label">Brand Style Guide</span>
+    <span class="cover-year">First Edition · 2026</span>
   </div>
 
-  <!-- ══════════════════════════════
-       S2 — THE COSMOS EXPANDS
-  ══════════════════════════════ -->
-  <div class="scene" id="s2">
-    <div class="scene-bg kb-in"></div>
-    <div class="scene-overlay grade-deep"></div>
-    <div class="scene-content">
-      <p class="t-italic a1">In the vast, uncomfortable quiet.</p>
-      <p class="t-main a2" style="margin-top:40px;">Something waits.</p>
+  <div class="cover-center">
+    <p class="cover-pre">I Will FITFO LLC · Coral Gables, Florida</p>
+    <div class="cover-title">
+      <span class="line">I</span>
+      <span class="line">WILL<span class="period">.</span></span>
     </div>
+    <div class="cover-rule">
+      <div class="cover-rule-line"></div>
+      <span class="cover-rule-text">The Standard</span>
+      <div class="cover-rule-line"></div>
+    </div>
+    <p class="cover-sub">A luxury lifestyle journal brand for the man who lives with intention. This document defines the visual identity, voice, and standards of I Will FITFO LLC.</p>
   </div>
 
-  <!-- ══════════════════════════════
-       S3 — THE MAN ALONE
-  ══════════════════════════════ -->
-  <div class="scene" id="s3">
-    <div class="scene-bg kb-out"></div>
-    <div class="scene-overlay grade-dusk"></div>
-    <div class="scene-content">
-      <p class="t-label">The invitation</p>
-      <p class="t-italic a1">Not more noise.</p>
-      <p class="t-italic a2" style="margin-top:28px;">Not more answers.</p>
-      <p class="t-main a3" style="margin-top:44px;">An hour.</p>
-      <p class="t-italic a4" style="margin-top:16px;">Just an hour.</p>
+  <div class="cover-bottom">
+    <div class="cover-address">
+      I Will FITFO LLC<br>
+      121 Alhambra Plaza, Suite 1000<br>
+      Coral Gables, Florida 33134<br>
+      iwill.world
     </div>
+    <div class="cover-fitfo">Figure It The Fuck Out</div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════════
+     TYPEFACE & LOGO SPECIFICATIONS
+═══════════════════════════════════════════ -->
+
+<div class="section" style="border-top: none; padding-top: 60px;">
+  <p class="section-label">00 &nbsp; Typeface & Logo Specifications</p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 60px;">
+
+    <div style="background: var(--charcoal); border: 1px solid var(--mid); padding: 48px;">
+      <p class="usage-label" style="margin-bottom: 24px;">The Typeface</p>
+      <p style="font-size: 32px; font-weight: 300; color: var(--cream); margin-bottom: 8px;">Cormorant Garamond</p>
+      <p style="font-size: 14px; color: var(--dim); font-style: italic; margin-bottom: 32px;">The only typeface used across the entire brand. No exceptions.</p>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Brand Mark</span>
+          <span style="font-size: 13px; color: var(--cream);">Light 300</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Headlines</span>
+          <span style="font-size: 13px; color: var(--cream);">Light 300</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Body Copy</span>
+          <span style="font-size: 13px; color: var(--cream);">Regular 400</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Reflective / Italic</span>
+          <span style="font-size: 13px; color: var(--cream);">Italic 400</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+          <span style="font-size: 13px; color: var(--dim);">Emphasis</span>
+          <span style="font-size: 13px; color: var(--cream);">Medium 500</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: var(--charcoal); border: 1px solid var(--mid); padding: 48px;">
+      <p class="usage-label" style="margin-bottom: 24px;">Logo Specifications</p>
+      <div style="display: flex; flex-direction: column; gap: 0;">
+        <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Typeface</span>
+          <span style="font-size: 13px; color: var(--cream);">Cormorant Garamond</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Weight</span>
+          <span style="font-size: 13px; color: var(--cream);">Light 300</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Letter spacing</span>
+          <span style="font-size: 13px; color: var(--cream);">175px / -0.02em</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Line height</span>
+          <span style="font-size: 13px; color: var(--cream);">0.85</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Letterform color</span>
+          <span style="font-size: 13px; color: var(--cream);">#E8DCC8 Cream</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Period color</span>
+          <span style="font-size: 13px; color: var(--gold);">#C5A55A Gold</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+          <span style="font-size: 13px; color: var(--dim);">Background</span>
+          <span style="font-size: 13px; color: var(--cream);">#0D0D0D Black</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 14px 0;">
+          <span style="font-size: 13px; color: var(--dim);">Minimum clear space</span>
+          <span style="font-size: 13px; color: var(--cream);">Equal to cap height on all sides</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- ══════════════════════════════
-       S4 — THE HORIZON
-  ══════════════════════════════ -->
-  <div class="scene" id="s4">
-    <div class="scene-bg kb-slow"></div>
-    <div class="scene-overlay grade-fog"></div>
-    <div class="scene-content">
-      <p class="t-italic a1">There comes a moment</p>
-      <p class="t-main a2" style="margin-top:24px;">every man knows.</p>
-      <p class="t-italic a3" style="margin-top:44px;">When the quiet gets loud enough</p>
-      <p class="t-italic a4" style="margin-top:16px;">to hear the right questions.</p>
+  <!-- LOGO ANATOMY -->
+  <div style="background: var(--black); border: 1px solid var(--mid); padding: 60px; margin-bottom: 40px; position: relative; overflow: hidden;">
+
+    <div style="position: absolute; top: 20px; left: 0; right: 0; text-align: center;">
+      <span style="font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase; color: var(--dim);">Logo Anatomy</span>
     </div>
+
+    <div style="text-align: center; margin: 20px 0 40px;">
+      <div style="font-size: clamp(60px, 12vw, 110px); font-weight: 300; color: var(--cream); line-height: 0.85; letter-spacing: -0.02em; display: inline-block; position: relative;">
+        I<br>WILL<span style="color: var(--gold);">.</span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--mid);">
+      <div style="background: var(--charcoal); padding: 24px; text-align: center;">
+        <p style="font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px;">The Mark</p>
+        <p style="font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.6;">Two lines. Stacked. The I stands alone above WILL. Deliberate separation of subject and declaration.</p>
+      </div>
+      <div style="background: var(--charcoal); padding: 24px; text-align: center;">
+        <p style="font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px;">The Weight</p>
+        <p style="font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.6;">Light 300 throughout. Authority through restraint. The mark does not need weight to command attention.</p>
+      </div>
+      <div style="background: var(--charcoal); padding: 24px; text-align: center;">
+        <p style="font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px;">The Period</p>
+        <p style="font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.6;">Gold #C5A55A. Same size as the letterforms. The declaration is complete. It is not open for discussion.</p>
+      </div>
+    </div>
+
   </div>
 
-  <!-- ══════════════════════════════
-       S5 — THE MILKY WAY
-  ══════════════════════════════ -->
-  <div class="scene" id="s5">
-    <div class="scene-bg kb-in"></div>
-    <div class="scene-overlay grade-cosmos"></div>
-    <div class="scene-content">
-      <p class="t-italic a1" style="font-size: clamp(26px, 5.5vw, 42px);">Somewhere between who you were</p>
-      <p class="t-italic a2" style="margin-top:12px; font-size: clamp(26px, 5.5vw, 42px);">and who you are becoming —</p>
-      <p class="t-main a3" style="margin-top:44px; font-size: clamp(22px, 5vw, 38px);">is an hour that belongs to you.</p>
-      <p class="t-main t-gold a4" style="margin-top:32px; font-size: clamp(36px, 8vw, 64px); letter-spacing: 0.06em;">Take it.</p>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       S6 — THE QUOTE — IMPACT
-  ══════════════════════════════ -->
-  <div class="scene" id="s6">
-    <div class="scene-bg kb-in"></div>
-    <div class="scene-overlay grade-dark"></div>
-    <div class="scene-content" style="justify-content:center; padding:0 40px;">
-      <div class="quote-block">
-        <span class="q1" style="
-          font-size: clamp(36px, 9vw, 64px);
-          font-weight: 400;
-          color: var(--cream);
-          display: block;
-          line-height: 1.2;
-          letter-spacing: 0.01em;
-        ">The answers</span>
-        <span class="q1" style="
-          font-size: clamp(36px, 9vw, 64px);
-          font-weight: 400;
-          color: var(--cream);
-          display: block;
-          line-height: 1.2;
-          font-style: italic;
-          letter-spacing: 0.01em;
-          animation-delay: 0.6s;
-          opacity: 0;
-          animation: fadeIn 2s ease both 0.6s;
-          animation-play-state: paused;
-        ">are incomplete.</span>
-        <div style="
-          width: 0;
-          height: 1px;
-          background: var(--gold);
-          margin: 36px auto;
-          opacity: 0;
-          animation: ruleExpand 1.2s ease both 1.8s;
-          animation-play-state: paused;
-        " class="q-rule-inner"></div>
-        <span class="q2" style="
-          font-size: clamp(28px, 7vw, 52px);
-          font-weight: 400;
-          font-style: italic;
-          color: var(--muted);
-          display: block;
-          line-height: 1.3;
-          margin-top: 0;
-        ">And still —</span>
-        <span class="q2" style="
-          font-size: clamp(28px, 7vw, 52px);
-          font-weight: 400;
-          color: var(--gold);
-          display: block;
-          line-height: 1.3;
-          margin-top: 8px;
-          animation-delay: 3.4s;
-          opacity: 0;
-          animation: fadeIn 2s ease both 3.4s;
-          animation-play-state: paused;
-        ">it is yours to solve.</span>
-        <span class="q-sig" style="
-          font-size: 30px;
-          margin-top: 52px;
-        ">— W</span>
+  <!-- FITFO LOCKUP -->
+  <div style="background: var(--charcoal); border: 1px solid var(--mid); padding: 48px;">
+    <p class="usage-label" style="margin-bottom: 32px;">The FITFO Lockup</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+      <div style="background: var(--black); padding: 48px; text-align: center;">
+        <div style="font-size: clamp(48px, 10vw, 88px); font-weight: 300; color: var(--cream); line-height: 0.85; letter-spacing: -0.02em;">I<br>WILL<span style="color: var(--gold);">.</span></div>
+        <div style="width: 36px; height: 1px; background: var(--gold); margin: 20px auto;"></div>
+        <div style="font-size: clamp(14px, 3vw, 22px); font-weight: 300; letter-spacing: 0.6em; padding-left: 0.6em; text-transform: uppercase; color: rgba(197,165,90,0.45);">FITFO</div>
+      </div>
+      <div>
+        <div style="display: flex; flex-direction: column; gap: 0;">
+          <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+            <span style="font-size: 13px; color: var(--dim);">I WILL. size</span>
+            <span style="font-size: 13px; color: var(--cream);">Primary — full scale</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+            <span style="font-size: 13px; color: var(--dim);">FITFO size</span>
+            <span style="font-size: 13px; color: var(--cream);">~25% of I WILL. height</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+            <span style="font-size: 13px; color: var(--dim);">FITFO letter spacing</span>
+            <span style="font-size: 13px; color: var(--cream);">0.6em — wide tracked</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+            <span style="font-size: 13px; color: var(--dim);">FITFO color</span>
+            <span style="font-size: 13px; color: var(--cream);">Gold at 45% opacity</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--mid);">
+            <span style="font-size: 13px; color: var(--dim);">Divider</span>
+            <span style="font-size: 13px; color: var(--cream);">Gold rule — 36-48px wide</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 14px 0;">
+            <span style="font-size: 13px; color: var(--dim);">Usage</span>
+            <span style="font-size: 13px; color: var(--cream);">Closing mark on brand materials</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       S7 — BRAND MARK
-  ══════════════════════════════ -->
-  <div class="scene" id="s7">
-    <div class="brand-wrap">
-      <div class="b-i">I</div>
-      <div class="b-will">WILL<span class="b-period">.</span></div>
-      <div class="b-rule"></div>
-      <div class="b-fitfo">FITFO</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     BRAND MARK
+═══════════════════════════════════════════ -->
+
+<div class="section">
+  <p class="section-label">01 &nbsp; The Brand Mark</p>
+
+  <div class="mark-grid">
+
+    <div class="mark-cell dark">
+      <div class="mark-display">
+        <span class="mark-i mark-size-large" style="color:#E8DCC8;">I</span>
+        <span class="mark-will mark-size-large" style="color:#E8DCC8;">WILL<span class="mark-period-gold">.</span></span>
+      </div>
+      <p class="mark-label">Primary — Cream on Black</p>
     </div>
+
+    <div class="mark-cell charcoal">
+      <div class="mark-display">
+        <span class="mark-i mark-size-large" style="color:#E8DCC8;">I</span>
+        <span class="mark-will mark-size-large" style="color:#E8DCC8;">WILL<span class="mark-period-gold">.</span></span>
+      </div>
+      <p class="mark-label">Secondary — Cream on Charcoal</p>
+    </div>
+
+    <div class="mark-cell cream-bg">
+      <div class="mark-display">
+        <span class="mark-i mark-size-large" style="color:#1C1C1C;">I</span>
+        <span class="mark-will mark-size-large" style="color:#1C1C1C;">WILL<span style="color:#C5A55A;">.</span></span>
+      </div>
+      <p class="mark-label on-light">Reversed — Charcoal on Cream</p>
+    </div>
+
+    <div class="mark-cell gold-bg">
+      <div class="mark-display">
+        <span class="mark-i mark-size-large" style="color:#0D0D0D;">I</span>
+        <span class="mark-will mark-size-large" style="color:#0D0D0D;">WILL<span class="mark-period-dark">.</span></span>
+      </div>
+      <p class="mark-label on-gold">Special — Black on Gold</p>
+    </div>
+
   </div>
 
-  <!-- ══════════════════════════════
-       S8 — MAY 4TH FINAL
-  ══════════════════════════════ -->
-  <div class="scene" id="s8">
-    <div class="date-wrap">
-      <div class="d-may">May 4th</div>
-      <div class="d-year">2026</div>
-      <div class="d-rule"></div>
-    </div>
+  <p class="section-label" style="margin-top:60px;">The Period</p>
+
+  <div style="background: var(--charcoal); border: 1px solid var(--mid); padding: 48px; margin-bottom: 48px;">
+    <p style="font-size: 18px; color: var(--muted); line-height: 1.9; max-width: 700px; margin-bottom: 24px;">
+      The period after WILL is not punctuation. It is the brand. It signals intention — a declaration that is complete, certain, and not open for discussion. In all standard applications the period is rendered in gold <span style="color: var(--gold);">#C5A55A</span> — on black, charcoal, and cream backgrounds alike.
+    </p>
+    <p style="font-size: 16px; color: var(--muted); line-height: 1.9; max-width: 700px; margin-bottom: 24px;">
+      The single exception is the Special application — black letterforms on a gold background. In this case the period renders in black <span style="color: var(--dim);">#0D0D0D</span> to maintain contrast and legibility against the gold field. The identity of the period is preserved through context — the gold background itself carries the meaning.
+    </p>
+    <p style="font-size: 14px; color: var(--dim); font-style: italic;">
+      The period is never omitted. Never scaled differently from the letterforms. Never removed for any reason.
+    </p>
   </div>
 
-  <div class="prog" id="prog"></div>
+  <p class="section-label">Do Not</p>
+
+  <div class="dont-grid">
+    <div class="dont-item">
+      <div class="dont-mark" style="font-family: Arial, sans-serif; color: var(--muted);">I WILL.</div>
+      <p class="dont-note">Do not render in sans-serif or system fonts. Cormorant Garamond Light only.</p>
+    </div>
+    <div class="dont-item">
+      <div class="dont-mark" style="font-weight: 700; color: var(--muted);">I WILL.</div>
+      <p class="dont-note">Do not use bold or heavy weights. The mark is always font-weight 300 — Light.</p>
+    </div>
+    <div class="dont-item">
+      <div class="dont-mark" style="color: var(--muted);">I WILL<span style="color: var(--muted);">.</span></div>
+      <p class="dont-note">Do not render the period in cream or any color other than gold #C5A55A.</p>
+    </div>
+  </div>
 
 </div>
 
-<script>
-  const scenes = document.querySelectorAll('.scene');
-  const prog = document.getElementById('prog');
-  const blackout = document.getElementById('blackout');
+<!-- ═══════════════════════════════════════════
+     COLOR SYSTEM
+═══════════════════════════════════════════ -->
 
-  const dur = [
-    7000,  // S1 — every man carries something
-    6000,  // S2 — something waits
-    8000,  // S3 — not more noise
-    7000,  // S4 — the horizon
-    9000,  // S5 — take it
-    11000, // S6 — THE QUOTE — needs full time to build and land
-    7000,  // S7 — brand mark
-    8000,  // S8 — May 4th
-  ];
+<div class="section">
+  <p class="section-label">02 &nbsp; Color System</p>
 
-  const total = dur.reduce((a,b) => a+b, 0);
-  let cur = 0;
+  <div class="color-grid">
 
-  function resetAnims(scene) {
-    scene.querySelectorAll('*').forEach(el => {
-      const anim = el.style.animation;
-      if (anim && anim !== 'none' && anim !== '') {
-        el.style.animation = 'none';
-        el.style.opacity = '0';
-        void el.offsetWidth;
-        el.style.animation = anim;
-      }
-      // Also reset and run any paused inline animation-play-state
-      if (el.style.animationPlayState === 'paused') {
-        el.style.animationPlayState = 'running';
-      }
-    });
-  }
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#0D0D0D;"></div>
+      <div class="swatch-info">
+        <p class="swatch-name">Black</p>
+        <p class="swatch-hex">#0D0D0D</p>
+        <p class="swatch-role">Primary background. The foundation everything lives on.</p>
+      </div>
+    </div>
 
-  function activateScene(index) {
-    scenes[index].classList.add('active');
-    resetAnims(scenes[index]);
-  }
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#1C1C1C;"></div>
+      <div class="swatch-info">
+        <p class="swatch-name">Charcoal</p>
+        <p class="swatch-hex">#1C1C1C</p>
+        <p class="swatch-role">Secondary background. Section differentiation.</p>
+      </div>
+    </div>
 
-  function dissolveTransition(callback) {
-    // Slow crossfade — no black cut
-    scenes[cur].style.transition = 'opacity 1.8s cubic-bezier(0.4,0,0.2,1)';
-    scenes[cur].style.opacity = '0';
-    setTimeout(() => {
-      callback();
-    }, 400);
-  }
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#E8DCC8;"></div>
+      <div class="swatch-info">
+        <p class="swatch-name">Cream</p>
+        <p class="swatch-hex">#E8DCC8</p>
+        <p class="swatch-role">Primary text. Headlines. The declaration voice.</p>
+      </div>
+    </div>
 
-  activateScene(0);
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#C5A55A;"></div>
+      <div class="swatch-info">
+        <p class="swatch-name">Gold</p>
+        <p class="swatch-hex">#C5A55A</p>
+        <p class="swatch-role">The standard. Accents. Labels. The period. Used sparingly.</p>
+      </div>
+    </div>
 
-  function next() {
-    if (cur >= scenes.length - 1) return;
-    const currentDur = dur[cur];
-    setTimeout(() => {
-      dissolveTransition(() => {
-        cur++;
-        if (cur < scenes.length) {
-          activateScene(cur);
-          next();
-        }
-      });
-    }, currentDur);
-  }
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#9A8E7E;"></div>
+      <div class="swatch-info">
+        <p class="swatch-name">Muted</p>
+        <p class="swatch-hex">#9A8E7E</p>
+        <p class="swatch-role">Secondary text. Italic copy. The reflective voice.</p>
+      </div>
+    </div>
 
-  next();
+  </div>
 
-  let ms = 0;
-  setInterval(() => {
-    ms += 50;
-    prog.style.width = Math.min((ms/total)*100, 100) + '%';
-  }, 50);
-</script>
+  <div class="color-usage">
+    <div class="color-usage-item">
+      <p class="usage-label">Hierarchy</p>
+      <p class="usage-text">
+        Gold speaks first — it is the label, the accent, the standard marker.<br><br>
+        Cream speaks second — it is the declaration, the headline, the product name.<br><br>
+        Muted speaks third — it is the description, the reflection, the supporting thought.<br><br>
+        Black and charcoal hold everything.
+      </p>
+    </div>
+    <div class="color-usage-item">
+      <p class="usage-label">Usage Rules</p>
+      <p class="usage-text">
+        Gold is used for labels, rules, accents, and the brand period only. It is never used for large blocks of body text.<br><br>
+        Cream is the primary reading color. All headlines and declarations are cream.<br><br>
+        Muted is for body copy, descriptions, and anything italic or secondary.<br><br>
+        Never place cream directly on gold. Never place gold directly on cream.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TYPOGRAPHY
+═══════════════════════════════════════════ -->
+
+<div class="section">
+  <p class="section-label">03 &nbsp; Typography</p>
+
+  <div style="background: var(--charcoal); border: 1px solid var(--mid); padding: 48px; margin-bottom: 60px;">
+    <p class="usage-label" style="margin-bottom:16px;">The Typeface</p>
+    <p style="font-size: 18px; color: var(--muted); line-height: 1.9; max-width: 700px; margin-bottom: 16px;">
+      Cormorant Garamond is the only typeface used across the entire I Will FITFO brand. No exceptions. It is used at weights 300 (Light), 400 (Regular), and 500 (Medium) in both roman and italic variants.
+    </p>
+    <p style="font-size: 14px; color: var(--dim); font-style: italic;">
+      Cormorant Garamond was chosen for its combination of classical authority and elegant restraint. It reads as both literary and luxury — exactly the tension this brand lives in.
+    </p>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-meta">
+      <p class="type-name">Display — Brand Mark Scale</p>
+      <p class="type-spec">Cormorant Garamond Light 300<br>clamp(80px, 14vw, 160px)<br>Line height 0.85 · Tracking -0.02em</p>
+    </div>
+    <div class="type-display-xl">I<br>WILL<span class="period" style="color:var(--gold);">.</span></div>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-meta">
+      <p class="type-name">Display — Hero Headlines</p>
+      <p class="type-spec">Cormorant Garamond Light 300<br>clamp(40px, 7vw, 72px)<br>Line height 1.1</p>
+    </div>
+    <p class="type-display-lg">Give the man you respect<br>something made for him.</p>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-meta">
+      <p class="type-name">Heading — Section Titles</p>
+      <p class="type-spec">Cormorant Garamond Light 300<br>clamp(28px, 4vw, 44px)<br>Line height 1.2</p>
+    </div>
+    <p class="type-heading">A Record of Practice.<br>Not a Trophy Case.</p>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-meta">
+      <p class="type-name">Subheading — Italic Reflection</p>
+      <p class="type-spec">Cormorant Garamond Italic 400<br>clamp(20px, 2.5vw, 28px)<br>Line height 1.5 · Color Muted</p>
+    </div>
+    <p class="type-subheading">A knowledge section built for the man who pays attention.<br>Because the man who records what he notices becomes<br>the man who knows what he wants.</p>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-meta">
+      <p class="type-name">Body — Descriptions and Copy</p>
+      <p class="type-spec">Cormorant Garamond Regular 400<br>18px · Line height 1.9<br>Color Muted #9A8E7E</p>
+    </div>
+    <p class="type-body">The cigar belongs here not as an escape but as a ritual pause — one of the few remaining moments that still asks you to slow down, observe carefully, and leave with more clarity than you came with.</p>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-meta">
+      <p class="type-name">Label — Section Markers</p>
+      <p class="type-spec">Cormorant Garamond Regular 400<br>10-11px · Tracking 0.5-0.6em<br>Uppercase · Color Gold</p>
+    </div>
+    <p class="type-label">The Journal &nbsp;·&nbsp; Volume I &nbsp;·&nbsp; First Edition 2026</p>
+  </div>
+
+  <div class="type-specimen">
+    <div class="type-meta">
+      <p class="type-name">Caption — Supporting Information</p>
+      <p class="type-spec">Cormorant Garamond Italic 400<br>13px · Color Dim #6B6055</p>
+    </div>
+    <p class="type-caption">Volume I of a Five Volume Series &nbsp;·&nbsp; The Foundation · The Craft · The Connoisseur · The Standard · The Legacy</p>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     VOICE
+═══════════════════════════════════════════ -->
+
+<div class="section">
+  <p class="section-label">04 &nbsp; Brand Voice</p>
+
+  <div style="background: var(--charcoal); border: 1px solid var(--mid); border-left: 3px solid var(--gold); padding: 48px; margin-bottom: 60px;">
+    <p style="font-size: 22px; font-weight: 300; color: var(--cream); margin-bottom: 16px;">Restrained. Intentional. Powerful.</p>
+    <p style="font-size: 17px; font-style: italic; color: var(--muted); line-height: 1.9; max-width: 680px;">
+      The man this brand speaks to does not need to be sold to. He needs to be recognized. Write to that man. Recognize him. Then give him the invitation.
+    </p>
+  </div>
+
+  <div class="voice-grid" style="margin-bottom: 60px;">
+
+    <div class="voice-cell">
+      <p class="voice-cell-label good">Write This</p>
+      <p class="voice-example">Some journals record what you smoked. This one records who you are becoming.</p>
+      <p class="voice-note">Direct. Specific. Creates immediate recognition in the right reader.</p>
+    </div>
+
+    <div class="voice-cell">
+      <p class="voice-cell-label bad">Not This</p>
+      <p class="voice-example bad-text">This beautifully crafted premium journal is designed for the discerning cigar enthusiast who wants to document their tasting journey.</p>
+      <p class="voice-note">Generic. Performative. Talks at the reader instead of to him.</p>
+    </div>
+
+    <div class="voice-cell">
+      <p class="voice-cell-label good">Write This</p>
+      <p class="voice-example">For the man who carries more than he says.</p>
+      <p class="voice-note">Sparse. Earned. The reader fills in his own story.</p>
+    </div>
+
+    <div class="voice-cell">
+      <p class="voice-cell-label bad">Not This</p>
+      <p class="voice-example bad-text">We believe every man deserves a space to reflect on his personal journey and document his experiences in a meaningful way.</p>
+      <p class="voice-note">Corporate. Empty. We believe is never how this brand speaks.</p>
+    </div>
+
+  </div>
+
+  <p class="section-label">Signature Lines</p>
+
+  <div class="signature-lines">
+    <div class="sig-line">
+      <div class="sig-dash"></div>
+      <p class="sig-text">Some things don't start with a plan. They start with a decision.</p>
+    </div>
+    <div class="sig-line">
+      <div class="sig-dash"></div>
+      <p class="sig-text">There comes a point when excuses lose their value.</p>
+    </div>
+    <div class="sig-line">
+      <div class="sig-dash"></div>
+      <p class="sig-text">The answers are incomplete. And still — it is yours to solve.</p>
+    </div>
+    <div class="sig-line">
+      <div class="sig-dash"></div>
+      <p class="sig-text">The ritual. The record. The standard.</p>
+    </div>
+    <div class="sig-line">
+      <div class="sig-dash"></div>
+      <p class="sig-text">Because somewhere between who you were and who you are becoming is an hour that belongs to you. Take it.</p>
+    </div>
+    <div class="sig-line">
+      <div class="sig-dash"></div>
+      <p class="sig-text">I built this for myself first. That much is honest.</p>
+    </div>
+    <div class="sig-line">
+      <div class="sig-dash"></div>
+      <p class="sig-text">The cigar is the excuse. The moment is the point.</p>
+    </div>
+    <div class="sig-line">
+      <div class="sig-dash"></div>
+      <p class="sig-text">Not a slogan. A standard.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PRODUCTS
+═══════════════════════════════════════════ -->
+
+<div class="section">
+  <p class="section-label">05 &nbsp; The Products</p>
+
+  <div class="product-grid">
+
+    <div class="product-card">
+      <div class="product-card-top">
+        <p class="product-num">Product 01</p>
+        <p class="product-name">FITFO Cigar Journal<br>Volume I</p>
+        <p class="product-sub">The Foundation — First Edition 2026</p>
+      </div>
+      <div class="product-card-bottom">
+        <div class="product-detail">
+          <span class="detail-key">Format</span>
+          <span class="detail-val">Digest 5.5" × 8.5"</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Pages</span>
+          <span class="detail-val">108</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Entries</span>
+          <span class="detail-val">40 structured cigar logs</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Series</span>
+          <span class="detail-val">Volume I of five</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Price</span>
+          <span class="detail-val" style="color:var(--gold);">$45</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Ships</span>
+          <span class="detail-val">June 1st, 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-card-top">
+        <p class="product-num">Product 02</p>
+        <p class="product-name">I WILL. Complete<br>Gift Box</p>
+        <p class="product-sub">Father's Day First Edition — Limited to 50</p>
+      </div>
+      <div class="product-card-bottom">
+        <div class="product-detail">
+          <span class="detail-key">Contents</span>
+          <span class="detail-val">8 curated items</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Ashtray</span>
+          <span class="detail-val">American made — bourbon barrel</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Leather case</span>
+          <span class="detail-val">Crazy Horse — I WILL. embossed</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Membership</span>
+          <span class="detail-val">Founding 50 included</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Price</span>
+          <span class="detail-val" style="color:var(--gold);">$249</span>
+        </div>
+        <div class="product-detail">
+          <span class="detail-key">Ships</span>
+          <span class="detail-val">June 17th, 2026</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background: var(--charcoal); border: 1px solid var(--mid); padding: 48px;">
+    <p class="usage-label" style="margin-bottom: 16px;">Future Product Lines</p>
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--mid); overflow: hidden; width: 100%;">
+      <div style="background: var(--charcoal); padding: 20px 12px; text-align: center; min-width: 0;">
+        <p style="font-size: 10px; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Active</p>
+        <p style="font-size: 15px; font-weight: 300; color: var(--cream);">Cigar</p>
+      </div>
+      <div style="background: var(--charcoal); padding: 20px 12px; text-align: center; min-width: 0;">
+        <p style="font-size: 10px; letter-spacing: 0.2em; color: var(--dim); margin-bottom: 8px;">Coming</p>
+        <p style="font-size: 15px; font-weight: 300; color: var(--dim);">Whiskey</p>
+      </div>
+      <div style="background: var(--charcoal); padding: 20px 12px; text-align: center; min-width: 0;">
+        <p style="font-size: 10px; letter-spacing: 0.2em; color: var(--dim); margin-bottom: 8px;">Coming</p>
+        <p style="font-size: 15px; font-weight: 300; color: var(--dim);">Wine</p>
+      </div>
+      <div style="background: var(--charcoal); padding: 20px 12px; text-align: center; min-width: 0;">
+        <p style="font-size: 10px; letter-spacing: 0.2em; color: var(--dim); margin-bottom: 8px;">Coming</p>
+        <p style="font-size: 15px; font-weight: 300; color: var(--dim);">Tequila</p>
+      </div>
+      <div style="background: var(--charcoal); padding: 20px 12px; text-align: center; min-width: 0;">
+        <p style="font-size: 10px; letter-spacing: 0.2em; color: var(--dim); margin-bottom: 8px;">Coming</p>
+        <p style="font-size: 15px; font-weight: 300; color: var(--dim);">Coffee</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FOUNDING 50
+═══════════════════════════════════════════ -->
+
+<div class="section">
+  <p class="section-label">06 &nbsp; The Founding 50</p>
+
+  <div class="founding-block">
+    <p class="founding-title">Not a loyalty program.<br>A record of a legacy being built.</p>
+    <p class="founding-desc">The first 50 to receive each I Will FITFO launch become founding members of that chapter. Their names live on the site permanently. Each founding member receives a private gift before every new launch — and five invitations to extend to people ready for the next chapter. This is how the standard travels. Not through advertising. Not through algorithms. Through the deliberate choice of people who already live by one.</p>
+  </div>
+
+  <div class="founding-chapters">
+    <div class="chapter">
+      <p class="chapter-status open">Now Open</p>
+      <p class="chapter-name open-name">Founding 50<br>Cigar Vol. I<br>Father's Day 2026</p>
+    </div>
+    <div class="chapter">
+      <p class="chapter-status coming">Coming — Fall 2026</p>
+      <p class="chapter-name coming-name">Founding 50<br>Cigar Founders Set</p>
+    </div>
+    <div class="chapter">
+      <p class="chapter-status coming">Coming</p>
+      <p class="chapter-name coming-name">Founding 50<br>Whiskey Vol. I</p>
+    </div>
+    <div class="chapter">
+      <p class="chapter-status coming">Coming</p>
+      <p class="chapter-name coming-name">Founding 50<br>Whiskey Founders Set</p>
+    </div>
+    <div class="chapter">
+      <p class="chapter-status coming">Coming</p>
+      <p class="chapter-name coming-name">Founding 50<br>Wine Vol. I</p>
+    </div>
+    <div class="chapter">
+      <p class="chapter-status coming">Coming</p>
+      <p class="chapter-name coming-name">Founding 50<br>Tequila Vol. I</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     CONTACT
+═══════════════════════════════════════════ -->
+
+<div class="section">
+  <p class="section-label">07 &nbsp; Contact & Digital</p>
+
+  <div class="contact-grid">
+    <div class="contact-cell">
+      <p class="contact-type">Website</p>
+      <p class="contact-value">iwill.world</p>
+    </div>
+    <div class="contact-cell">
+      <p class="contact-type">Email</p>
+      <p class="contact-value">william@iwill.world<br>hello@iwill.world</p>
+    </div>
+    <div class="contact-cell">
+      <p class="contact-type">Phone</p>
+      <p class="contact-value">305-954-7826</p>
+    </div>
+    <div class="contact-cell">
+      <p class="contact-type">Instagram</p>
+      <p class="contact-value">@iwill.fitfo</p>
+    </div>
+    <div class="contact-cell">
+      <p class="contact-type">TikTok</p>
+      <p class="contact-value">@iwill.fitfo</p>
+    </div>
+    <div class="contact-cell">
+      <p class="contact-type">Address</p>
+      <p class="contact-value">121 Alhambra Plaza<br>Suite 1000, PMB 1034<br>Coral Gables, FL 33134</p>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     BACK COVER
+═══════════════════════════════════════════ -->
+
+<div class="back-cover">
+  <div class="back-cover-bg">FITFO</div>
+  <div class="back-mark-i">I</div>
+  <div class="back-mark-will">WILL<span style="color:var(--gold);">.</span></div>
+  <div class="back-rule"></div>
+  <div class="back-fitfo">FITFO</div>
+  <p class="back-quote">Because somewhere between who you were and who you are becoming is an hour that belongs to you. Take it.</p>
+  <p class="back-address">I Will FITFO LLC &nbsp;·&nbsp; Coral Gables, Florida &nbsp;·&nbsp; iwill.world &nbsp;·&nbsp; First Edition 2026</p>
+</div>
 
 </body>
 </html>
