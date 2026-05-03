@@ -1,326 +1,653 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post Two — I WILL.</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I WILL. — Post Two</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<style>
 
-    body {
-      background: #080808;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 22px;
-      font-family: 'Cormorant Garamond', serif;
-    }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    .reel {
-      position: relative;
-      width: 340px;
-      height: 604px;
-      overflow: hidden;
-      border: 1px solid #161616;
-    }
+:root {
+  --black: #040404;
+  --charcoal: #1A1A1A;
+  --cream: #E8DCC8;
+  --gold: #C5A55A;
+  --muted: #B8A898;
+}
 
-    canvas {
-      position: absolute;
-      inset: 0;
-      display: block;
-    }
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--black);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
 
-    .text-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 56px 44px;
-      z-index: 2;
-      pointer-events: none;
-    }
+.film {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--black);
+}
 
-    .text-block {
-      text-align: center;
-      width: 100%;
-    }
+/* GRAIN */
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: grain 0.12s steps(1) infinite;
+}
 
-    .phrase {
-      display: block;
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      color: #E8DCC8;
-      font-size: 20px;
-      line-height: 1.5;
-      letter-spacing: 0.045em;
-      opacity: 0;
-      margin-top: 5px;
-    }
+@keyframes grain {
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-5%,-5%); }
+  40%  { transform: translate(5%,10%); }
+  60%  { transform: translate(15%,0); }
+  80%  { transform: translate(-10%,5%); }
+  100% { transform: translate(5%,-10%); }
+}
 
-    .phrase:first-child { margin-top: 0; }
-    .phrase.gap          { margin-top: 22px; }
-    .phrase.sig {
-      margin-top: 38px;
-      color: #C5A55A;
-      font-size: 16px;
-      letter-spacing: 0.18em;
-    }
+/* VIGNETTE */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 89;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%,
+    transparent 20%,
+    rgba(0,0,0,0.55) 65%,
+    rgba(0,0,0,0.95) 100%
+  );
+}
 
-    .label {
-      position: absolute;
-      top: 12px; right: 14px;
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      color: #1e1e1e;
-      text-transform: uppercase;
-      z-index: 3;
-    }
+/* LETTERBOX */
+.lb { position: fixed; left: 0; right: 0; z-index: 88; background: var(--black); }
+.lb-top { top: 0; height: 5%; }
+.lb-bottom { bottom: 0; height: 5%; }
 
-    .progress {
-      position: absolute;
-      bottom: 0; left: 0;
-      height: 1px;
-      background: #C5A55A;
-      width: 0%;
-      opacity: 0;
-      z-index: 4;
-    }
+/* SCENES */
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  overflow: hidden;
+}
 
-    .btn-replay {
-      background: none;
-      border: 1px solid #1e1a14;
-      color: #3d3428;
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      padding: 9px 26px;
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: border-color 0.4s, color 0.4s;
-    }
+.scene.active { opacity: 1; }
 
-    .btn-replay.show {
-      opacity: 1;
-      pointer-events: auto;
-      transition: opacity 1.2s ease, border-color 0.4s, color 0.4s;
-    }
+.scene-bg {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+}
 
-    .btn-replay:hover {
-      border-color: #C5A55A;
-      color: #C5A55A;
-    }
-  </style>
+.scene-overlay { position: absolute; inset: 0; }
+
+/* GRADES */
+.grade-cosmos  { background: rgba(2, 4, 18, 0.65); }
+.grade-deep    { background: rgba(2, 5, 15, 0.72); }
+.grade-dusk    { background: rgba(8, 4, 2, 0.55); }
+.grade-dark    { background: rgba(0, 0, 0, 0.68); }
+.grade-fog     { background: rgba(4, 8, 12, 0.60); }
+
+/* KEN BURNS */
+.kb-in    { animation: kbIn  12s ease-in-out forwards; }
+.kb-out   { animation: kbOut 12s ease-in-out forwards; }
+.kb-slow  { animation: kbSlow 14s ease-in-out forwards; }
+
+@keyframes kbIn   { from { transform: scale(1.06); } to { transform: scale(1.0); } }
+@keyframes kbOut  { from { transform: scale(1.0);  } to { transform: scale(1.06); } }
+@keyframes kbSlow { from { transform: scale(1.04) translate(1%, 0); } to { transform: scale(1.0) translate(-1%, 0); } }
+
+/* CONTENT */
+.scene-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12% 48px 10% 48px;
+  text-align: center;
+  z-index: 10;
+}
+
+/* TEXT */
+.t-label {
+  font-size: 10px;
+  letter-spacing: 0.7em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.75);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeIn 1s ease both;
+  animation-play-state: paused;
+  animation-delay: 0.4s;
+}
+
+.scene.active .t-label { animation-play-state: running; }
+
+.t-main {
+  font-size: clamp(26px, 6vw, 46px);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  opacity: 0;
+}
+
+.t-italic {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--muted);
+  font-size: clamp(22px, 5vw, 38px);
+  line-height: 1.5;
+  opacity: 0;
+}
+
+.t-gold {
+  color: var(--gold);
+  font-weight: 400;
+}
+
+.t-small {
+  font-size: clamp(14px, 2.5vw, 20px);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.7;
+  opacity: 0;
+}
+
+/* STAGGER */
+.a1 { animation: fadeIn 1.8s ease both; animation-delay: 0.8s;  animation-play-state: paused; }
+.a2 { animation: fadeIn 1.8s ease both; animation-delay: 2.2s;  animation-play-state: paused; }
+.a3 { animation: fadeIn 1.8s ease both; animation-delay: 3.8s;  animation-play-state: paused; }
+.a4 { animation: fadeIn 1.8s ease both; animation-delay: 5.4s;  animation-play-state: paused; }
+
+.scene.active .a1,
+.scene.active .a2,
+.scene.active .a3,
+.scene.active .a4 { animation-play-state: running; }
+
+/* GOLD RULE */
+.g-rule {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  margin: 28px auto;
+  opacity: 0;
+  animation: ruleExpand 1.4s ease both;
+  animation-delay: 1.6s;
+  animation-play-state: paused;
+}
+
+.scene.active .g-rule { animation-play-state: running; }
+
+@keyframes ruleExpand {
+  from { width: 0; opacity: 0; }
+  to   { width: 44px; opacity: 1; }
+}
+
+/* QUOTE SCENE */
+.quote-block {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 44px;
+}
+
+.q1 {
+  display: block;
+  font-size: clamp(30px, 7.5vw, 54px);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: fadeIn 2s ease both 0.6s;
+  animation-play-state: paused;
+}
+
+.q2 {
+  display: block;
+  font-size: clamp(24px, 6vw, 42px);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  margin-top: 8px;
+  opacity: 0;
+  animation: fadeIn 2s ease both 1.8s;
+  animation-play-state: paused;
+}
+
+.q-sig {
+  display: block;
+  font-size: 26px;
+  font-style: italic;
+  color: var(--gold);
+  margin-top: 44px;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  animation: fadeIn 1.5s ease both 3.2s;
+  animation-play-state: paused;
+}
+
+.scene.active .q1,
+.scene.active .q2,
+.scene.active .q-sig { animation-play-state: running; }
+
+/* BRAND MARK */
+.brand-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+}
+
+.b-i {
+  font-size: clamp(100px, 22vw, 190px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: blurIn 2s ease both 0.3s;
+  animation-play-state: paused;
+}
+
+.b-will {
+  font-size: clamp(100px, 22vw, 190px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: blurIn 2s ease both 0.8s;
+  animation-play-state: paused;
+}
+
+.scene.active .b-i,
+.scene.active .b-will { animation-play-state: running; }
+
+.b-period { color: var(--gold); }
+
+.b-rule {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  margin: 22px auto;
+  opacity: 0;
+  animation: ruleExpand 1.2s ease both 1.4s;
+  animation-play-state: paused;
+}
+
+.scene.active .b-rule { animation-play-state: running; }
+
+.b-fitfo {
+  font-size: clamp(32px, 7vw, 58px);
+  font-weight: 300;
+  letter-spacing: 0.75em;
+  padding-left: 0.75em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.4);
+  opacity: 0;
+  animation: fadeIn 1.5s ease both 1.8s;
+  animation-play-state: paused;
+}
+
+.scene.active .b-fitfo { animation-play-state: running; }
+
+/* DATE SCENE */
+.date-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+}
+
+.d-may {
+  font-size: clamp(48px, 12vw, 96px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  opacity: 0;
+  animation: blurIn 2.2s ease both 0.4s;
+  animation-play-state: paused;
+}
+
+.d-year {
+  font-size: clamp(14px, 3.5vw, 24px);
+  font-weight: 300;
+  color: rgba(197,165,90,0.32);
+  letter-spacing: 0.35em;
+  margin-top: 12px;
+  opacity: 0;
+  animation: fadeIn 1.4s ease both 1.4s;
+  animation-play-state: paused;
+}
+
+.d-rule {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  margin: 36px auto;
+  opacity: 0;
+  animation: ruleExpand 1.2s ease both 2s;
+  animation-play-state: paused;
+}
+
+.scene.active .d-may,
+.scene.active .d-year,
+.scene.active .d-rule { animation-play-state: running; }
+
+/* PHOTO BACKGROUNDS */
+
+/* S1 — Deep space / galaxy */
+#s1 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.72) 100%),
+    url('https://images.unsplash.com/photo-1446941611757-91d2c3bd3d45?w=1080&q=85&auto=format&fit=crop');
+  background-position: center center;
+}
+
+/* S2 — Stars and cosmos */
+#s2 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.75) 100%),
+    url('https://images.unsplash.com/photo-1464802686167-b939a6910659?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 40%;
+}
+
+/* S3 — Man silhouette / contemplation */
+#s3 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.70) 100%),
+    url('https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 30%;
+}
+
+/* S4 — Ocean horizon / vastness */
+#s4 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.72) 100%),
+    url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 50%;
+}
+
+/* S5 — Milky way / infinite */
+#s5 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.78) 100%),
+    url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1080&q=85&auto=format&fit=crop');
+  background-position: center center;
+}
+
+/* S6 — Quote — dark atmospheric */
+#s6 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.85) 100%),
+    url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1080&q=85&auto=format&fit=crop');
+  opacity: 0.5;
+}
+
+/* S7 — Brand mark — pure charcoal */
+#s7 { background: #141414; }
+
+/* S8 — Date — pure black */
+#s8 { background: #050505; }
+
+/* KEYFRAMES */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(8px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
+/* BLACK TRANSITION OVERLAY */
+#blackout {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* PROGRESS */
+.prog {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 1.5px;
+  width: 0;
+  background: linear-gradient(to right, rgba(197,165,90,0.1), rgba(197,165,90,0.5));
+  z-index: 100;
+}
+
+</style>
 </head>
 <body>
 
-  <div class="reel">
-    <canvas id="c"></canvas>
-    <span class="label">9 · 16</span>
-    <div class="text-overlay">
-      <div class="text-block">
-        <span class="phrase"       id="p1">The answers are</span>
-        <span class="phrase"       id="p2">incomplete.</span>
-        <span class="phrase gap"   id="p3">And still</span>
-        <span class="phrase"       id="p4">—</span>
-        <span class="phrase"       id="p5">it is yours to solve.</span>
-        <span class="phrase sig"   id="p6">— W</span>
-      </div>
+<div class="film">
+
+  <div class="lb lb-top"></div>
+  <div class="lb lb-bottom"></div>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+  <div id="blackout"></div>
+
+  <!-- ══════════════════════════════
+       S1 — DEEP SPACE / OPENING
+  ══════════════════════════════ -->
+  <div class="scene" id="s1">
+    <div class="scene-bg kb-slow"></div>
+    <div class="scene-overlay grade-cosmos"></div>
+    <div class="scene-content">
+      <p class="t-label">Where the answers live</p>
+      <p class="t-italic a1">Not in the noise.</p>
+      <p class="t-italic a2" style="margin-top:28px;">Not in the speed.</p>
+      <p class="t-italic a3" style="margin-top:28px;">In the vast, uncomfortable quiet.</p>
     </div>
-    <div class="progress" id="bar"></div>
   </div>
 
-  <button class="btn-replay" id="replayBtn" onclick="run()">Replay</button>
+  <!-- ══════════════════════════════
+       S2 — THE COSMOS EXPANDS
+  ══════════════════════════════ -->
+  <div class="scene" id="s2">
+    <div class="scene-bg kb-in"></div>
+    <div class="scene-overlay grade-deep"></div>
+    <div class="scene-content">
+      <p class="t-main a1">Every man carries something</p>
+      <p class="t-italic a2" style="margin-top:20px;">he has not yet found the words for.</p>
+    </div>
+  </div>
 
-  <script>
-    // ── Canvas setup ───────────────────────────────────────────────────
-    const canvas = document.getElementById('c');
-    const ctx    = canvas.getContext('2d');
-    const W = 340, H = 604;
-    canvas.width  = W;
-    canvas.height = H;
+  <!-- ══════════════════════════════
+       S3 — THE MAN ALONE
+  ══════════════════════════════ -->
+  <div class="scene" id="s3">
+    <div class="scene-bg kb-out"></div>
+    <div class="scene-overlay grade-dusk"></div>
+    <div class="scene-content">
+      <p class="t-label">The work</p>
+      <p class="t-italic a1">He does not need more advice.</p>
+      <p class="t-italic a2" style="margin-top:24px;">He needs an hour.</p>
+      <p class="t-main a3" style="margin-top:36px; font-size: clamp(20px, 4.5vw, 36px);">To sit with it.</p>
+    </div>
+  </div>
 
-    // ── Stars ──────────────────────────────────────────────────────────
-    let stars = [];
+  <!-- ══════════════════════════════
+       S4 — THE HORIZON
+  ══════════════════════════════ -->
+  <div class="scene" id="s4">
+    <div class="scene-bg kb-slow"></div>
+    <div class="scene-overlay grade-fog"></div>
+    <div class="scene-content">
+      <p class="t-italic a1">The answers are incomplete.</p>
+      <div class="g-rule"></div>
+      <p class="t-main a2">And still —</p>
+      <p class="t-main t-gold a3" style="margin-top:16px; font-size: clamp(28px, 6.5vw, 50px);">it is yours to solve.</p>
+    </div>
+  </div>
 
-    function initStars() {
-      stars = Array.from({ length: 300 }, () => ({
-        x:  (Math.random() - 0.5) * W * 3,
-        y:  (Math.random() - 0.5) * H * 3,
-        z:  Math.random() * W,
-        b:  0.25 + Math.random() * 0.55,    // brightness
-        sz: 0.35 + Math.random() * 1.1      // base size
-      }));
-    }
+  <!-- ══════════════════════════════
+       S5 — THE MILKY WAY
+  ══════════════════════════════ -->
+  <div class="scene" id="s5">
+    <div class="scene-bg kb-in"></div>
+    <div class="scene-overlay grade-cosmos"></div>
+    <div class="scene-content">
+      <p class="t-small a1" style="max-width: 520px; line-height: 1.9;">Somewhere between who you were and who you are becoming —</p>
+      <p class="t-main a2" style="margin-top:28px;">is an hour that belongs to you.</p>
+      <p class="t-main t-gold a3" style="margin-top:20px; font-size: clamp(26px, 6vw, 46px); letter-spacing: 0.04em;">Take it.</p>
+    </div>
+  </div>
 
-    // ── Zoom speed curve ───────────────────────────────────────────────
-    // 3s black → slow galaxy drift → accelerating zoom → peaks at — W → settles
-    function zoomSpeed(t) {
-      if (t < 3.0)  return 0;
-      if (t < 5.5)  return 0.15 + (t - 3.0) / 2.5 * 0.25;   // materialise 0.15→0.40
-      if (t < 24.5) return 0.40 + (t - 5.5) / 19.0 * 3.0;   // 0.40→3.40 slow build
-      if (t < 27.0) return 3.40 - (t - 24.5) / 2.5 * 1.8;   // decelerate after — W
-      return 1.6;                                              // cruise
-    }
+  <!-- ══════════════════════════════
+       S6 — THE QUOTE
+  ══════════════════════════════ -->
+  <div class="scene" id="s6">
+    <div class="scene-bg kb-in"></div>
+    <div class="scene-overlay grade-dark"></div>
+    <div class="scene-content" style="justify-content:center; padding-bottom:0;">
+      <div class="quote-block">
+        <span class="q1">The answers are incomplete.</span>
+        <span class="q2">And still — it is yours to solve.</span>
+        <span class="q-sig">— W</span>
+      </div>
+    </div>
+  </div>
 
-    // ── Background tint (near-black throughout, barely hints blue near end) ──
-    function bgFill(t) {
-      if (t < 22) return [6, 6, 8];
-      if (t < 26) {
-        const p = (t - 22) / 4;
-        return [6, Math.round(6 + p * 2), Math.round(8 + p * 5)];
+  <!-- ══════════════════════════════
+       S7 — BRAND MARK
+  ══════════════════════════════ -->
+  <div class="scene" id="s7">
+    <div class="brand-wrap">
+      <div class="b-i">I</div>
+      <div class="b-will">WILL<span class="b-period">.</span></div>
+      <div class="b-rule"></div>
+      <div class="b-fitfo">FITFO</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       S8 — MAY 4TH FINAL
+  ══════════════════════════════ -->
+  <div class="scene" id="s8">
+    <div class="date-wrap">
+      <div class="d-may">May 4th</div>
+      <div class="d-year">2026</div>
+      <div class="d-rule"></div>
+    </div>
+  </div>
+
+  <div class="prog" id="prog"></div>
+
+</div>
+
+<script>
+  const scenes = document.querySelectorAll('.scene');
+  const prog = document.getElementById('prog');
+  const blackout = document.getElementById('blackout');
+
+  // Scene durations in ms — timed to breathe with Interstellar
+  const dur = [
+    7000,  // S1 — deep space opening — slow build
+    6000,  // S2 — every man carries something
+    6500,  // S3 — he needs an hour
+    7000,  // S4 — the answers are incomplete — THE KEY SCENE
+    7000,  // S5 — take it
+    8000,  // S6 — quote alone
+    7000,  // S7 — brand mark
+    8000,  // S8 — May 4th
+  ];
+
+  const total = dur.reduce((a,b) => a+b, 0);
+  let cur = 0;
+
+  function resetAnims(scene) {
+    scene.querySelectorAll('*').forEach(el => {
+      const anim = el.style.animation;
+      if (anim && anim !== 'none' && anim !== '') {
+        el.style.animation = 'none';
+        el.style.opacity = '0';
+        void el.offsetWidth;
+        el.style.animation = anim;
       }
-      return [6, 8, 13];
-    }
+    });
+  }
 
-    // ── Draw one frame ─────────────────────────────────────────────────
-    function drawFrame(t, speed) {
-      const [r, g, b] = bgFill(t);
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      ctx.fillRect(0, 0, W, H);
+  function activateScene(index) {
+    scenes[index].classList.add('active');
+    resetAnims(scenes[index]);
+  }
 
-      const cx = W / 2, cy = H / 2;
-
-      // Star global alpha: 0 while black, fades in 3→5.5s
-      const starA = t < 3 ? 0 : Math.min(1, (t - 3) / 2.5);
-
-      stars.forEach(star => {
-        star.z -= speed;
-        if (star.z <= 0) {
-          star.x  = (Math.random() - 0.5) * W * 3;
-          star.y  = (Math.random() - 0.5) * H * 3;
-          star.z  = W;
-        }
-
-        const sx  = (star.x / star.z) * W + cx;
-        const sy  = (star.y / star.z) * H + cy;
-        if (sx < -4 || sx > W + 4 || sy < -4 || sy > H + 4) return;
-
-        const depth = 1 - star.z / W;
-        const sz    = Math.max(0.15, depth * star.sz);
-        const alpha = depth * star.b * starA;
-
-        // Motion streaks when zooming fast
-        if (speed > 1.2 && alpha > 0.05) {
-          const streakLen = Math.min(12, speed * 2.2);
-          const dx = sx - cx, dy = sy - cy;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist > 0) {
-            const nx = dx / dist, ny = dy / dist;
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(232,220,200,${alpha * 0.45})`;
-            ctx.lineWidth   = Math.max(0.3, sz * 0.55);
-            ctx.moveTo(sx, sy);
-            ctx.lineTo(sx - nx * streakLen, sy - ny * streakLen);
-            ctx.stroke();
-          }
-        }
-
-        // Star dot
-        ctx.beginPath();
-        ctx.arc(sx, sy, sz, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(232,220,200,${alpha})`;
-        ctx.fill();
-      });
-
-      // Vignette — frames the text
-      const vig = ctx.createRadialGradient(cx, cy, cx * 0.25, cx, cy, cx * 1.55);
-      vig.addColorStop(0, 'rgba(0,0,0,0)');
-      vig.addColorStop(1, 'rgba(0,0,0,0.62)');
-      ctx.fillStyle = vig;
-      ctx.fillRect(0, 0, W, H);
-    }
-
-    // ── Text timing — mapped to Cornfield Chase piano notes ────────────
-    // 3s black + note positions in the opening phrase (seconds)
-    const PHRASES = [
-      { id: 'p1', t:  6.5 },   // first note lands
-      { id: 'p2', t:  9.2 },   // second note
-      { id: 'p3', t: 12.6 },   // third note
-      { id: 'p4', t: 16.1 },   // fourth — the pause beat
-      { id: 'p5', t: 19.8 },   // fifth note
-      { id: 'p6', t: 24.5 },   // last intro note — W appears, melody follows
-    ];
-
-    const FADE_MS = 4200;
-    const EASE    = 'cubic-bezier(0.18, 0, 0.82, 1)';
-    const TOTAL   = 30;
-
-    // ── Animation loop ─────────────────────────────────────────────────
-    let raf, startMs, triggered = {};
-
-    function tick() {
-      const t     = (performance.now() - startMs) / 1000;
-      const speed = zoomSpeed(t);
-
-      drawFrame(t, speed);
-
-      // Reveal phrases
-      PHRASES.forEach(({ id, t: mark }) => {
-        if (!triggered[id] && t >= mark) {
-          const el = document.getElementById(id);
-          el.style.transition = `opacity ${FADE_MS}ms ${EASE}`;
-          el.style.opacity    = '1';
-          triggered[id]       = true;
-        }
-      });
-
-      // Progress bar
-      if (t > 3) {
-        const bar = document.getElementById('bar');
-        bar.style.opacity = '0.3';
-        bar.style.width   = Math.min(((t - 3) / (TOTAL - 3)) * 100, 100) + '%';
-      }
-
-      const lastT  = PHRASES[PHRASES.length - 1].t;
-      const finished = t > lastT + (FADE_MS / 1000) + 0.8;
-
-      if (!finished) {
-        raf = requestAnimationFrame(tick);
-      } else {
-        document.getElementById('replayBtn').classList.add('show');
-      }
-    }
-
-    // ── Reset ──────────────────────────────────────────────────────────
-    function reset() {
-      cancelAnimationFrame(raf);
-      triggered = {};
-      initStars();
-
-      PHRASES.forEach(({ id }) => {
-        const el = document.getElementById(id);
-        el.style.transition = 'none';
-        el.style.opacity    = '0';
-      });
-
-      const bar = document.getElementById('bar');
-      bar.style.transition = 'none';
-      bar.style.width   = '0%';
-      bar.style.opacity = '0';
-
-      ctx.fillStyle = 'rgb(6,6,8)';
-      ctx.fillRect(0, 0, W, H);
-
-      document.getElementById('replayBtn').classList.remove('show');
-    }
-
-    function run() {
-      reset();
+  function blackTransition(callback) {
+    blackout.style.transition = 'opacity 0.2s ease';
+    blackout.style.opacity = '1';
+    setTimeout(() => {
+      callback();
       setTimeout(() => {
-        startMs = performance.now();
-        raf = requestAnimationFrame(tick);
-      }, 60);
-    }
+        blackout.style.transition = 'opacity 0.3s ease';
+        blackout.style.opacity = '0';
+      }, 500);
+    }, 200);
+  }
 
-    window.addEventListener('load', () => setTimeout(run, 200));
-  </script>
+  activateScene(0);
+
+  function next() {
+    if (cur >= scenes.length - 1) return;
+    const currentDur = dur[cur];
+    setTimeout(() => {
+      blackTransition(() => {
+        scenes[cur].style.opacity = '0';
+        cur++;
+        if (cur < scenes.length) {
+          activateScene(cur);
+          next();
+        }
+      });
+    }, currentDur);
+  }
+
+  next();
+
+  let ms = 0;
+  setInterval(() => {
+    ms += 50;
+    prog.style.width = Math.min((ms/total)*100, 100) + '%';
+  }, 50);
+</script>
 
 </body>
 </html>
