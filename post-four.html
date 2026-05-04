@@ -1,1 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I WILL. — May 4th 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<style>
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #040404;
+  --charcoal: #1A1A1A;
+  --cream: #E8DCC8;
+  --gold: #C5A55A;
+  --muted: #B8A898;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--black);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.film {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: grain 0.12s steps(1) infinite;
+}
+
+@keyframes grain {
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-5%,-5%); }
+  40%  { transform: translate(5%,10%); }
+  60%  { transform: translate(15%,0); }
+  80%  { transform: translate(-10%,5%); }
+  100% { transform: translate(5%,-10%); }
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 89;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%,
+    transparent 20%,
+    rgba(0,0,0,0.55) 65%,
+    rgba(0,0,0,0.93) 100%
+  );
+}
+
+.lb { position: fixed; left: 0; right: 0; z-index: 88; background: var(--black); }
+.lb-top { top: 0; height: 5%; }
+.lb-bottom { bottom: 0; height: 5%; }
+
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 1.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+.scene.active { opacity: 1; }
+
+.scene-bg {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+}
+
+.scene-overlay { position: absolute; inset: 0; }
+
+.grade-dark    { background: rgba(0,0,0,0.62); }
+.grade-miami   { background: rgba(0,5,15,0.38); }
+.grade-wynwood { background: rgba(5,0,8,0.42); }
+.grade-bay     { background: rgba(0,8,18,0.35); }
+.grade-cigar   { background: rgba(10,5,0,0.50); }
+.grade-warm    { background: rgba(15,8,2,0.48); }
+
+.kb-in    { animation: kbIn   11s ease-in-out forwards; }
+.kb-out   { animation: kbOut  11s ease-in-out forwards; }
+.kb-slow  { animation: kbSlow 13s ease-in-out forwards; }
+.kb-left  { animation: kbLeft 11s ease-in-out forwards; }
+.kb-right { animation: kbRight 11s ease-in-out forwards; }
+
+@keyframes kbIn    { from { transform: scale(1.07); } to { transform: scale(1.0); } }
+@keyframes kbOut   { from { transform: scale(1.0);  } to { transform: scale(1.07); } }
+@keyframes kbSlow  { from { transform: scale(1.04) translate(1%,0); } to { transform: scale(1.0) translate(-1%,0); } }
+@keyframes kbLeft  { from { transform: scale(1.06) translateX(2%);  } to { transform: scale(1.0) translateX(-2%); } }
+@keyframes kbRight { from { transform: scale(1.06) translateX(-2%); } to { transform: scale(1.0) translateX(2%); } }
+
+.scene-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12% 48px 10% 48px;
+  text-align: center;
+  z-index: 10;
+}
+
+.t-label {
+  font-size: 10px;
+  letter-spacing: 0.7em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.85);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeIn 1s ease both 0.4s;
+  animation-play-state: paused;
+}
+
+.scene.active .t-label { animation-play-state: running; }
+
+.t-main {
+  font-size: clamp(28px, 6.5vw, 50px);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  opacity: 0;
+}
+
+.t-italic {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--muted);
+  font-size: clamp(24px, 5.5vw, 42px);
+  line-height: 1.5;
+  opacity: 0;
+}
+
+.t-gold { color: var(--gold); }
+
+.a1 { animation: fadeIn 1.2s ease both 0.4s;  animation-play-state: paused; }
+.a2 { animation: fadeIn 1.2s ease both 1.2s;  animation-play-state: paused; }
+.a3 { animation: fadeIn 1.2s ease both 2.0s;  animation-play-state: paused; }
+.a4 { animation: fadeIn 1.2s ease both 2.8s;  animation-play-state: paused; }
+
+.scene.active .a1,
+.scene.active .a2,
+.scene.active .a3,
+.scene.active .a4 { animation-play-state: running; }
+
+.g-rule {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  margin: 22px auto;
+  opacity: 0;
+  animation: ruleExpand 1.2s ease both 1.4s;
+  animation-play-state: paused;
+}
+
+.scene.active .g-rule { animation-play-state: running; }
+
+@keyframes ruleExpand {
+  from { width: 0; opacity: 0; }
+  to   { width: 44px; opacity: 1; }
+}
+
+/* S1 — pure black */
+#s1 { background: #080808; }
+
+/* S2 — Cigar craft / tobacco hands */
+#s2 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.70) 100%),
+    url('https://images.unsplash.com/photo-1574169208507-84376144848b?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 40%;
+}
+
+/* S3 — Cigar burning ritual */
+#s3 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.72) 100%),
+    url('https://images.unsplash.com/photo-1567769082728-8e4e4a3b6eff?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 40%;
+}
+
+/* S4 — Journal writing invitation */
+#s4 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.75) 100%),
+    url('https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 35%;
+}
+
+/* S5 — brand mark */
+#s5 { background: #141414; }
+
+/* S6 — May 4th */
+#s6 { background: #060606; }
+
+/* DECLARATION */
+.decl-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+  padding: 0 40px;
+}
+
+.decl-label {
+  font-size: 10px;
+  letter-spacing: 0.8em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.7);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeIn 1s ease both 0.2s;
+  animation-play-state: paused;
+}
+
+.decl-i {
+  font-size: clamp(90px, 20vw, 170px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: blurIn 1.6s ease both 0.5s;
+  animation-play-state: paused;
+}
+
+.decl-will {
+  font-size: clamp(90px, 20vw, 170px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: blurIn 1.6s ease both 0.9s;
+  animation-play-state: paused;
+}
+
+.decl-period { color: var(--gold); }
+
+.decl-rule {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 22px;
+  opacity: 0;
+  animation: ruleExpand 1.2s ease both 1.5s;
+  animation-play-state: paused;
+}
+
+.decl-fitfo {
+  font-size: clamp(24px, 5.5vw, 44px);
+  font-weight: 300;
+  letter-spacing: 0.6em;
+  padding-left: 0.6em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  animation: fadeIn 1.4s ease both 1.9s;
+  animation-play-state: paused;
+}
+
+.scene.active .decl-label,
+.scene.active .decl-i,
+.scene.active .decl-will,
+.scene.active .decl-rule,
+.scene.active .decl-fitfo { animation-play-state: running; }
+
+/* BRAND MARK */
+.brand-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+}
+
+.b-i {
+  font-size: clamp(100px, 22vw, 190px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: blurIn 2s ease both 0.3s;
+  animation-play-state: paused;
+}
+
+.b-will {
+  font-size: clamp(100px, 22vw, 190px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: blurIn 2s ease both 0.8s;
+  animation-play-state: paused;
+}
+
+.b-period { color: var(--gold); }
+
+.b-rule {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  margin: 22px auto;
+  opacity: 0;
+  animation: ruleExpand 1.2s ease both 1.4s;
+  animation-play-state: paused;
+}
+
+.b-fitfo {
+  font-size: clamp(32px, 7vw, 58px);
+  font-weight: 300;
+  letter-spacing: 0.75em;
+  padding-left: 0.75em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.4);
+  opacity: 0;
+  animation: fadeIn 1.5s ease both 1.8s;
+  animation-play-state: paused;
+}
+
+.b-url {
+  position: absolute;
+  bottom: 12%;
+  left: 0; right: 0;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  color: rgba(197,165,90,0.35);
+  opacity: 0;
+  animation: fadeIn 1.5s ease both 2.4s;
+  animation-play-state: paused;
+}
+
+.scene.active .b-i,
+.scene.active .b-will,
+.scene.active .b-rule,
+.scene.active .b-fitfo,
+.scene.active .b-url { animation-play-state: running; }
+
+/* DATE */
+.date-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+}
+
+.d-may {
+  font-size: clamp(54px, 14vw, 108px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  opacity: 0;
+  animation: blurIn 2.2s ease both 0.4s;
+  animation-play-state: paused;
+}
+
+.d-year {
+  font-size: clamp(16px, 3.5vw, 26px);
+  font-weight: 300;
+  color: rgba(197,165,90,0.32);
+  letter-spacing: 0.35em;
+  margin-top: 12px;
+  opacity: 0;
+  animation: fadeIn 1.4s ease both 1.4s;
+  animation-play-state: paused;
+}
+
+.d-rule {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  margin: 36px auto;
+  opacity: 0;
+  animation: ruleExpand 1.2s ease both 2.0s;
+  animation-play-state: paused;
+}
+
+.d-url {
+  font-size: 13px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.3);
+  opacity: 0;
+  animation: fadeIn 1.5s ease both 2.6s;
+  animation-play-state: paused;
+}
+
+.scene.active .d-may,
+.scene.active .d-year,
+.scene.active .d-rule,
+.scene.active .d-url { animation-play-state: running; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(8px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
+.prog {
+  position: fixed;
+  bottom: 0; left: 0;
+  height: 1.5px;
+  width: 0;
+  background: linear-gradient(to right, rgba(197,165,90,0.1), rgba(197,165,90,0.5));
+  z-index: 100;
+}
+
+</style>
+</head>
+<body>
+
+<div class="film">
+
+  <div class="lb lb-top"></div>
+  <div class="lb lb-bottom"></div>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+
+  <!-- S1 — THE DECLARATION -->
+  <div class="scene" id="s1">
+    <div class="decl-wrap">
+      <p class="decl-label">May 4th · 2026</p>
+      <div class="decl-i">I</div>
+      <div class="decl-will">WILL<span class="decl-period">.</span></div>
+      <div class="decl-rule"></div>
+      <div class="decl-fitfo">FITFO</div>
+    </div>
+  </div>
+
+  <!-- S2 — CIGAR CRAFT -->
+  <div class="scene" id="s2">
+    <div class="scene-bg kb-slow"></div>
+    <div class="scene-overlay grade-cigar"></div>
+    <div class="scene-content">
+      <p class="t-label">The ritual</p>
+      <p class="t-italic a1">The cigar is the pause.</p>
+      <p class="t-main a2" style="margin-top:20px;">The moment is the point.</p>
+    </div>
+  </div>
+
+  <!-- S3 — CIGAR BURNING -->
+  <div class="scene" id="s3">
+    <div class="scene-bg kb-left"></div>
+    <div class="scene-overlay grade-warm"></div>
+    <div class="scene-content">
+      <p class="t-label">The record</p>
+      <p class="t-italic a1">One cigar. One hour.</p>
+      <p class="t-italic a2" style="margin-top:20px;">One honest entry.</p>
+      <p class="t-main a3" style="margin-top:36px;">The record begins<br>when you open it.</p>
+    </div>
+  </div>
+
+  <!-- S4 — THE INVITATION -->
+  <div class="scene" id="s4">
+    <div class="scene-bg kb-out"></div>
+    <div class="scene-overlay grade-dark"></div>
+    <div class="scene-content">
+      <p class="t-label">The Founding 50</p>
+      <p class="t-main a1">The first chapter<br>opens today.</p>
+      <p class="t-italic a2" style="margin-top:24px;">For the man who carries<br>more than he says.</p>
+      <p class="t-main t-gold a3" style="margin-top:32px; font-size: clamp(16px, 3.5vw, 24px); letter-spacing: 0.12em;">iwill.world</p>
+    </div>
+  </div>
+
+  <!-- S5 — BRAND MARK -->
+  <div class="scene" id="s5">
+    <div class="brand-wrap">
+      <div class="b-i">I</div>
+      <div class="b-will">WILL<span class="b-period">.</span></div>
+      <div class="b-rule"></div>
+      <div class="b-fitfo">FITFO</div>
+    </div>
+    <div class="b-url">iwill.world</div>
+  </div>
+
+  <!-- S6 — MAY 4TH 2026 -->
+  <div class="scene" id="s6">
+    <div class="date-wrap">
+      <div class="d-may">May 4th</div>
+      <div class="d-year">2026</div>
+      <div class="d-rule"></div>
+      <div class="d-url">iwill.world</div>
+    </div>
+  </div>
+
+  <div class="prog" id="prog"></div>
+
+</div>
+
+<script>
+  const scenes = document.querySelectorAll('.scene');
+  const prog = document.getElementById('prog');
+
+  const dur = [
+    6000,  // S1 — declaration — violin opens — I WILL. builds with the first swell
+    5000,  // S2 — cigar craft — two lines land on second violin peak
+    6000,  // S3 — cigar burning — three lines build through the middle passage
+    7000,  // S4 — invitation — the emotional payoff — violin peaks here
+    5500,  // S5 — brand mark — violin begins to resolve
+    5500,  // S6 — May 4th — final frame holds as violin closes
+  ];
+
+  const total = dur.reduce((a,b) => a+b, 0);
+  let cur = 0;
+
+  function resetAnims(scene) {
+    scene.querySelectorAll('*').forEach(el => {
+      const anim = el.style.animation;
+      if (anim && anim !== 'none' && anim !== '') {
+        el.style.animation = 'none';
+        el.style.opacity = '0';
+        void el.offsetWidth;
+        el.style.animation = anim;
+      }
+      if (el.style.animationPlayState === 'paused') {
+        el.style.animationPlayState = 'running';
+      }
+    });
+  }
+
+  function activateScene(index) {
+    scenes[index].classList.add('active');
+    resetAnims(scenes[index]);
+  }
+
+  activateScene(0);
+
+  function next() {
+    if (cur >= scenes.length - 1) return;
+    const currentDur = dur[cur];
+    setTimeout(() => {
+      scenes[cur].style.transition = 'opacity 1.4s cubic-bezier(0.4,0,0.2,1)';
+      scenes[cur].style.opacity = '0';
+      setTimeout(() => {
+        cur++;
+        if (cur < scenes.length) {
+          activateScene(cur);
+          next();
+        }
+      }, 400);
+    }, currentDur);
+  }
+
+  next();
+
+  let ms = 0;
+  setInterval(() => {
+    ms += 50;
+    prog.style.width = Math.min((ms/total)*100, 100) + '%';
+  }, 50);
+</script>
+
+</body>
+</html>
