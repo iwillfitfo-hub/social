@@ -186,28 +186,28 @@ html, body {
 /* S1 — pure black */
 #s1 { background: #080808; }
 
-/* S2 — Miami downtown skyline */
+/* S2 — Miami Brickell downtown night skyline */
 #s2 .scene-bg {
   background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.62) 100%),
-    url('https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=1080&q=85&auto=format&fit=crop');
-  background-position: center 50%;
-}
-
-/* S3 — Wynwood */
-#s3 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.65) 100%),
-    url('https://images.unsplash.com/photo-1548510547-d39c8d9a4072?w=1080&q=85&auto=format&fit=crop');
+    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.60) 100%),
+    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1080&q=85&auto=format&fit=crop');
   background-position: center 45%;
 }
 
-/* S4 — Biscayne Bay */
+/* S3 — Colorful Miami street art district */
+#s3 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.60) 100%),
+    url('https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 45%;
+}
+
+/* S4 — MacArthur Causeway / Biscayne Bay blue water Miami */
 #s4 .scene-bg {
   background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.58) 100%),
-    url('https://images.unsplash.com/photo-1569704984634-e53c01b72c6a?w=1080&q=85&auto=format&fit=crop');
-  background-position: center 40%;
+    linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.55) 100%),
+    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 35%;
 }
 
 /* S5 — Cigar craft / tobacco hands */
@@ -495,35 +495,22 @@ html, body {
     </div>
   </div>
 
-  <!-- S2 — MIAMI SKYLINE -->
+  <!-- S2 — MIAMI SKYLINE — image only -->
   <div class="scene" id="s2">
     <div class="scene-bg kb-slow"></div>
     <div class="scene-overlay grade-miami"></div>
-    <div class="scene-content">
-      <p class="t-label">Miami, Florida</p>
-      <p class="t-main a1">Built here.</p>
-      <p class="t-italic a2" style="margin-top:20px;">On a balcony in Miami.<br>A cigar burning.<br>Well after midnight.</p>
-    </div>
   </div>
 
-  <!-- S3 — WYNWOOD -->
+  <!-- S3 — ART DISTRICT — image only -->
   <div class="scene" id="s3">
     <div class="scene-bg kb-right"></div>
     <div class="scene-overlay grade-wynwood"></div>
-    <div class="scene-content">
-      <p class="t-label">Wynwood · Miami</p>
-      <p class="t-italic a1">A city that rewards<br>the man who decides.</p>
-    </div>
   </div>
 
-  <!-- S4 — BISCAYNE BAY -->
+  <!-- S4 — BISCAYNE BAY — image only -->
   <div class="scene" id="s4">
     <div class="scene-bg kb-in"></div>
     <div class="scene-overlay grade-bay"></div>
-    <div class="scene-content">
-      <p class="t-italic a1">Some things don't start<br>with a plan.</p>
-      <p class="t-main a2" style="margin-top:24px;">They start with a decision.</p>
-    </div>
   </div>
 
   <!-- S5 — CIGAR CRAFT -->
@@ -591,15 +578,15 @@ html, body {
   const prog = document.getElementById('prog');
 
   const dur = [
-    5000,  // S1 — declaration
-    5500,  // S2 — Miami skyline
-    4500,  // S3 — Wynwood
-    5000,  // S4 — the bay
-    5000,  // S5 — cigar craft
-    5500,  // S6 — cigar burning
-    6000,  // S7 — invitation
-    6500,  // S8 — brand mark
-    7000,  // S9 — May 4th final
+    3500,  // S1 — declaration — hits on first violin note
+    3000,  // S2 — Miami skyline — image breathes
+    2500,  // S3 — art district — quick cut energy
+    2500,  // S4 — bay — quick cut energy
+    4000,  // S5 — cigar craft — copy lands on violin swell
+    4500,  // S6 — cigar burning — three lines need room
+    5000,  // S7 — invitation — the payoff
+    4500,  // S8 — brand mark — holds on violin peak
+    5000,  // S9 — May 4th final
   ];
 
   const total = dur.reduce((a,b) => a+b, 0);
