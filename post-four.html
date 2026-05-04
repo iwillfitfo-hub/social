@@ -495,26 +495,8 @@ html, body {
     </div>
   </div>
 
-  <!-- S2 — MIAMI SKYLINE — image only -->
+  <!-- S2 — CIGAR CRAFT -->
   <div class="scene" id="s2">
-    <div class="scene-bg kb-slow"></div>
-    <div class="scene-overlay grade-miami"></div>
-  </div>
-
-  <!-- S3 — ART DISTRICT — image only -->
-  <div class="scene" id="s3">
-    <div class="scene-bg kb-right"></div>
-    <div class="scene-overlay grade-wynwood"></div>
-  </div>
-
-  <!-- S4 — BISCAYNE BAY — image only -->
-  <div class="scene" id="s4">
-    <div class="scene-bg kb-in"></div>
-    <div class="scene-overlay grade-bay"></div>
-  </div>
-
-  <!-- S5 — CIGAR CRAFT -->
-  <div class="scene" id="s5">
     <div class="scene-bg kb-slow"></div>
     <div class="scene-overlay grade-cigar"></div>
     <div class="scene-content">
@@ -524,8 +506,8 @@ html, body {
     </div>
   </div>
 
-  <!-- S6 — CIGAR BURNING -->
-  <div class="scene" id="s6">
+  <!-- S3 — CIGAR BURNING -->
+  <div class="scene" id="s3">
     <div class="scene-bg kb-left"></div>
     <div class="scene-overlay grade-warm"></div>
     <div class="scene-content">
@@ -536,8 +518,8 @@ html, body {
     </div>
   </div>
 
-  <!-- S7 — THE INVITATION -->
-  <div class="scene" id="s7">
+  <!-- S4 — THE INVITATION -->
+  <div class="scene" id="s4">
     <div class="scene-bg kb-out"></div>
     <div class="scene-overlay grade-dark"></div>
     <div class="scene-content">
@@ -548,8 +530,8 @@ html, body {
     </div>
   </div>
 
-  <!-- S8 — BRAND MARK -->
-  <div class="scene" id="s8">
+  <!-- S5 — BRAND MARK -->
+  <div class="scene" id="s5">
     <div class="brand-wrap">
       <div class="b-i">I</div>
       <div class="b-will">WILL<span class="b-period">.</span></div>
@@ -559,8 +541,8 @@ html, body {
     <div class="b-url">iwill.world</div>
   </div>
 
-  <!-- S9 — MAY 4TH 2026 -->
-  <div class="scene" id="s9">
+  <!-- S6 — MAY 4TH 2026 -->
+  <div class="scene" id="s6">
     <div class="date-wrap">
       <div class="d-may">May 4th</div>
       <div class="d-year">2026</div>
@@ -578,15 +560,12 @@ html, body {
   const prog = document.getElementById('prog');
 
   const dur = [
-    3500,  // S1 — declaration — hits on first violin note
-    3000,  // S2 — Miami skyline — image breathes
-    2500,  // S3 — art district — quick cut energy
-    2500,  // S4 — bay — quick cut energy
-    4000,  // S5 — cigar craft — copy lands on violin swell
-    4500,  // S6 — cigar burning — three lines need room
-    5000,  // S7 — invitation — the payoff
-    4500,  // S8 — brand mark — holds on violin peak
-    5000,  // S9 — May 4th final
+    6000,  // S1 — declaration — violin opens — I WILL. builds with the first swell
+    5000,  // S2 — cigar craft — two lines land on second violin peak
+    6000,  // S3 — cigar burning — three lines build through the middle passage
+    7000,  // S4 — invitation — the emotional payoff — violin peaks here
+    5500,  // S5 — brand mark — violin begins to resolve
+    5500,  // S6 — May 4th — final frame holds as violin closes
   ];
 
   const total = dur.reduce((a,b) => a+b, 0);
