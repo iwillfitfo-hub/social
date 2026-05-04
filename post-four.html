@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I WILL. — May 4th</title>
+<title>I WILL. — May 4th 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
 <style>
 
@@ -33,7 +33,6 @@ html, body {
   background: var(--black);
 }
 
-/* GRAIN */
 .grain {
   position: fixed;
   inset: -50%;
@@ -56,7 +55,6 @@ html, body {
   100% { transform: translate(5%,-10%); }
 }
 
-/* VIGNETTE */
 .vignette {
   position: fixed;
   inset: 0;
@@ -64,22 +62,21 @@ html, body {
   pointer-events: none;
   background: radial-gradient(ellipse at 50% 50%,
     transparent 20%,
-    rgba(0,0,0,0.5) 65%,
-    rgba(0,0,0,0.92) 100%
+    rgba(0,0,0,0.55) 65%,
+    rgba(0,0,0,0.93) 100%
   );
 }
 
-/* LETTERBOX */
 .lb { position: fixed; left: 0; right: 0; z-index: 88; background: var(--black); }
 .lb-top { top: 0; height: 5%; }
 .lb-bottom { bottom: 0; height: 5%; }
 
-/* SCENES */
 .scene {
   position: absolute;
   inset: 0;
   opacity: 0;
   overflow: hidden;
+  transition: opacity 1.4s cubic-bezier(0.4,0,0.2,1);
 }
 
 .scene.active { opacity: 1; }
@@ -95,30 +92,25 @@ html, body {
 
 .scene-overlay { position: absolute; inset: 0; }
 
-/* GRADES */
-.grade-cosmos  { background: rgba(2, 4, 18, 0.65); }
-.grade-deep    { background: rgba(2, 5, 15, 0.60); }
-.grade-dark    { background: rgba(0, 0, 0, 0.65); }
-.grade-amber   { background: rgba(20, 10, 2, 0.45); }
-.grade-miami   { background: rgba(0, 5, 20, 0.35); }
-.grade-wynwood { background: rgba(5, 0, 10, 0.40); }
-.grade-bay     { background: rgba(0, 10, 20, 0.38); }
-.grade-warm    { background: rgba(15, 8, 2, 0.50); }
+.grade-dark    { background: rgba(0,0,0,0.62); }
+.grade-miami   { background: rgba(0,5,15,0.38); }
+.grade-wynwood { background: rgba(5,0,8,0.42); }
+.grade-bay     { background: rgba(0,8,18,0.35); }
+.grade-cigar   { background: rgba(10,5,0,0.50); }
+.grade-warm    { background: rgba(15,8,2,0.48); }
 
-/* KEN BURNS */
-.kb-in    { animation: kbIn  12s ease-in-out forwards; }
-.kb-out   { animation: kbOut 12s ease-in-out forwards; }
-.kb-slow  { animation: kbSlow 14s ease-in-out forwards; }
-.kb-left  { animation: kbLeft 12s ease-in-out forwards; }
-.kb-right { animation: kbRight 12s ease-in-out forwards; }
+.kb-in    { animation: kbIn   11s ease-in-out forwards; }
+.kb-out   { animation: kbOut  11s ease-in-out forwards; }
+.kb-slow  { animation: kbSlow 13s ease-in-out forwards; }
+.kb-left  { animation: kbLeft 11s ease-in-out forwards; }
+.kb-right { animation: kbRight 11s ease-in-out forwards; }
 
-@keyframes kbIn    { from { transform: scale(1.06); } to { transform: scale(1.0); } }
-@keyframes kbOut   { from { transform: scale(1.0);  } to { transform: scale(1.06); } }
+@keyframes kbIn    { from { transform: scale(1.07); } to { transform: scale(1.0); } }
+@keyframes kbOut   { from { transform: scale(1.0);  } to { transform: scale(1.07); } }
 @keyframes kbSlow  { from { transform: scale(1.04) translate(1%,0); } to { transform: scale(1.0) translate(-1%,0); } }
-@keyframes kbLeft  { from { transform: scale(1.06) translateX(2%); } to { transform: scale(1.0) translateX(-2%); } }
+@keyframes kbLeft  { from { transform: scale(1.06) translateX(2%);  } to { transform: scale(1.0) translateX(-2%); } }
 @keyframes kbRight { from { transform: scale(1.06) translateX(-2%); } to { transform: scale(1.0) translateX(2%); } }
 
-/* CONTENT */
 .scene-content {
   position: absolute;
   inset: 0;
@@ -131,12 +123,11 @@ html, body {
   z-index: 10;
 }
 
-/* TYPOGRAPHY */
 .t-label {
   font-size: 10px;
   letter-spacing: 0.7em;
   text-transform: uppercase;
-  color: rgba(197,165,90,0.8);
+  color: rgba(197,165,90,0.85);
   margin-bottom: 20px;
   opacity: 0;
   animation: fadeIn 1s ease both 0.4s;
@@ -146,10 +137,10 @@ html, body {
 .scene.active .t-label { animation-play-state: running; }
 
 .t-main {
-  font-size: clamp(26px, 6vw, 46px);
+  font-size: clamp(28px, 6.5vw, 50px);
   font-weight: 400;
   color: var(--cream);
-  line-height: 1.4;
+  line-height: 1.35;
   letter-spacing: 0.01em;
   opacity: 0;
 }
@@ -158,40 +149,30 @@ html, body {
   font-style: italic;
   font-weight: 400;
   color: var(--muted);
-  font-size: clamp(22px, 5vw, 38px);
+  font-size: clamp(24px, 5.5vw, 42px);
   line-height: 1.5;
   opacity: 0;
 }
 
-.t-gold {
-  color: var(--gold);
-  font-weight: 400;
-}
+.t-gold { color: var(--gold); }
 
-.t-large {
-  font-size: clamp(32px, 8vw, 60px);
-  font-weight: 300;
-}
-
-/* STAGGER */
-.a1 { animation: fadeIn 1.8s ease both 0.7s;  animation-play-state: paused; }
-.a2 { animation: fadeIn 1.8s ease both 2.0s;  animation-play-state: paused; }
-.a3 { animation: fadeIn 1.8s ease both 3.4s;  animation-play-state: paused; }
-.a4 { animation: fadeIn 1.8s ease both 4.8s;  animation-play-state: paused; }
+.a1 { animation: fadeIn 1.6s ease both 0.6s;  animation-play-state: paused; }
+.a2 { animation: fadeIn 1.6s ease both 1.8s;  animation-play-state: paused; }
+.a3 { animation: fadeIn 1.6s ease both 3.0s;  animation-play-state: paused; }
+.a4 { animation: fadeIn 1.6s ease both 4.2s;  animation-play-state: paused; }
 
 .scene.active .a1,
 .scene.active .a2,
 .scene.active .a3,
 .scene.active .a4 { animation-play-state: running; }
 
-/* GOLD RULE */
 .g-rule {
   width: 0;
   height: 1px;
   background: var(--gold);
-  margin: 24px auto;
+  margin: 22px auto;
   opacity: 0;
-  animation: ruleExpand 1.4s ease both 1.6s;
+  animation: ruleExpand 1.2s ease both 1.4s;
   animation-play-state: paused;
 }
 
@@ -202,94 +183,64 @@ html, body {
   to   { width: 44px; opacity: 1; }
 }
 
-/* ═══════════════════════════════
-   SCENE BACKGROUNDS
-═══════════════════════════════ */
+/* S1 — pure black */
+#s1 { background: #080808; }
 
-/* S1 — Deep cosmos — philosophy opening */
-#s1 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.78) 100%),
-    url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1080&q=85&auto=format&fit=crop');
-  background-position: center center;
-}
-
-/* S2 — Starfield — the answers incomplete */
+/* S2 — Miami downtown skyline */
 #s2 .scene-bg {
   background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.80) 100%),
-    url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1080&q=85&auto=format&fit=crop');
-  background-position: center center;
+    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.62) 100%),
+    url('https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 50%;
 }
 
-/* S3 — Dark road — the declaration */
+/* S3 — Wynwood */
 #s3 .scene-bg {
   background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.80) 100%),
-    url('https://images.unsplash.com/photo-1508614999368-9260051292e5?w=1080&q=85&auto=format&fit=crop');
+    linear-gradient(to bottom, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.65) 100%),
+    url('https://images.unsplash.com/photo-1548510547-d39c8d9a4072?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 45%;
 }
 
-/* S4 — I WILL FITFO standalone — pure dark */
-#s4 { background: #0A0A0A; }
+/* S4 — Biscayne Bay */
+#s4 .scene-bg {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.58) 100%),
+    url('https://images.unsplash.com/photo-1569704984634-e53c01b72c6a?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 40%;
+}
 
-/* S5 — Miami skyline day — the city alive */
+/* S5 — Cigar craft / tobacco hands */
 #s5 .scene-bg {
   background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%),
-    url('https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=1080&q=85&auto=format&fit=crop');
-  background-position: center 55%;
+    linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.70) 100%),
+    url('https://images.unsplash.com/photo-1574169208507-84376144848b?w=1080&q=85&auto=format&fit=crop');
+  background-position: center 40%;
 }
 
-/* S6 — Wynwood street art */
+/* S6 — Cigar burning ritual */
 #s6 .scene-bg {
   background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.65) 100%),
-    url('https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1080&q=85&auto=format&fit=crop');
-  background-position: center 40%;
-}
-
-/* S7 — Biscayne Bay / water */
-#s7 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.60) 100%),
-    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1080&q=85&auto=format&fit=crop');
-  background-position: center 40%;
-}
-
-/* S8 — Cigar ritual — the product */
-#s8 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.72) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.72) 100%),
     url('https://images.unsplash.com/photo-1567769082728-8e4e4a3b6eff?w=1080&q=85&auto=format&fit=crop');
   background-position: center 40%;
 }
 
-/* S9 — Journal / writing late night */
-#s9 .scene-bg {
+/* S7 — Journal writing invitation */
+#s7 .scene-bg {
   background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.70) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.75) 100%),
     url('https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1080&q=85&auto=format&fit=crop');
   background-position: center 35%;
 }
 
-/* S10 — The quote — dark starfield */
-#s10 .scene-bg {
-  background-image:
-    linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.88) 100%),
-    url('https://images.unsplash.com/photo-1464802686167-b939a6910659?w=1080&q=85&auto=format&fit=crop');
-  opacity: 0.55;
-}
+/* S8 — brand mark */
+#s8 { background: #141414; }
 
-/* S11 — Brand mark */
-#s11 { background: #141414; }
+/* S9 — May 4th */
+#s9 { background: #060606; }
 
-/* S12 — May 4th final */
-#s12 { background: #060606; }
-
-/* ═══════════════════════════════
-   DECLARATION SCENE
-═══════════════════════════════ */
-
+/* DECLARATION */
 .decl-wrap {
   position: absolute;
   inset: 0;
@@ -307,32 +258,32 @@ html, body {
   letter-spacing: 0.8em;
   text-transform: uppercase;
   color: rgba(197,165,90,0.7);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   opacity: 0;
-  animation: fadeIn 1s ease both 0.3s;
+  animation: fadeIn 1s ease both 0.2s;
   animation-play-state: paused;
 }
 
 .decl-i {
-  font-size: clamp(80px, 18vw, 150px);
+  font-size: clamp(90px, 20vw, 170px);
   font-weight: 300;
   color: var(--cream);
   line-height: 0.85;
   letter-spacing: -0.02em;
   opacity: 0;
-  animation: blurIn 1.8s ease both 0.6s;
+  animation: blurIn 1.6s ease both 0.5s;
   animation-play-state: paused;
 }
 
 .decl-will {
-  font-size: clamp(80px, 18vw, 150px);
+  font-size: clamp(90px, 20vw, 170px);
   font-weight: 300;
   color: var(--cream);
   line-height: 0.85;
   letter-spacing: -0.02em;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   opacity: 0;
-  animation: blurIn 1.8s ease both 1.0s;
+  animation: blurIn 1.6s ease both 0.9s;
   animation-play-state: paused;
 }
 
@@ -342,21 +293,21 @@ html, body {
   width: 0;
   height: 1px;
   background: var(--gold);
-  margin: 0 auto 20px;
+  margin: 0 auto 22px;
   opacity: 0;
-  animation: ruleExpand 1.2s ease both 1.6s;
+  animation: ruleExpand 1.2s ease both 1.5s;
   animation-play-state: paused;
 }
 
 .decl-fitfo {
-  font-size: clamp(22px, 5vw, 38px);
+  font-size: clamp(24px, 5.5vw, 44px);
   font-weight: 300;
-  letter-spacing: 0.55em;
-  padding-left: 0.55em;
+  letter-spacing: 0.6em;
+  padding-left: 0.6em;
   text-transform: uppercase;
   color: var(--gold);
   opacity: 0;
-  animation: fadeIn 1.4s ease both 2.0s;
+  animation: fadeIn 1.4s ease both 1.9s;
   animation-play-state: paused;
 }
 
@@ -366,63 +317,7 @@ html, body {
 .scene.active .decl-rule,
 .scene.active .decl-fitfo { animation-play-state: running; }
 
-/* ═══════════════════════════════
-   QUOTE SCENE
-═══════════════════════════════ */
-
-.quote-wrap {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  padding: 0 44px;
-}
-
-.q1 {
-  display: block;
-  font-size: clamp(30px, 7.5vw, 54px);
-  font-weight: 400;
-  color: var(--cream);
-  line-height: 1.25;
-  letter-spacing: 0.02em;
-  opacity: 0;
-  animation: fadeIn 2s ease both 0.6s;
-  animation-play-state: paused;
-}
-
-.q2 {
-  display: block;
-  font-size: clamp(24px, 6vw, 42px);
-  font-weight: 400;
-  font-style: italic;
-  color: var(--muted);
-  line-height: 1.35;
-  letter-spacing: 0.02em;
-  margin-top: 8px;
-  opacity: 0;
-  animation: fadeIn 2s ease both 1.8s;
-  animation-play-state: paused;
-}
-
-.q-sig {
-  display: block;
-  font-size: 26px;
-  font-style: italic;
-  color: var(--gold);
-  margin-top: 44px;
-  letter-spacing: 0.12em;
-  opacity: 0;
-  animation: fadeIn 1.5s ease both 3.2s;
-  animation-play-state: paused;
-}
-
-.scene.active .q1,
-.scene.active .q2,
-.scene.active .q-sig { animation-play-state: running; }
-
-/* ═══════════════════════════════
-   BRAND MARK SCENE
-═══════════════════════════════ */
-
+/* BRAND MARK */
 .brand-wrap {
   position: absolute;
   inset: 0;
@@ -456,9 +351,6 @@ html, body {
   animation-play-state: paused;
 }
 
-.scene.active .b-i,
-.scene.active .b-will { animation-play-state: running; }
-
 .b-period { color: var(--gold); }
 
 .b-rule {
@@ -470,8 +362,6 @@ html, body {
   animation: ruleExpand 1.2s ease both 1.4s;
   animation-play-state: paused;
 }
-
-.scene.active .b-rule { animation-play-state: running; }
 
 .b-fitfo {
   font-size: clamp(32px, 7vw, 58px);
@@ -485,13 +375,10 @@ html, body {
   animation-play-state: paused;
 }
 
-.scene.active .b-fitfo { animation-play-state: running; }
-
 .b-url {
   position: absolute;
   bottom: 12%;
-  left: 0;
-  right: 0;
+  left: 0; right: 0;
   text-align: center;
   font-size: 13px;
   letter-spacing: 0.4em;
@@ -501,12 +388,13 @@ html, body {
   animation-play-state: paused;
 }
 
+.scene.active .b-i,
+.scene.active .b-will,
+.scene.active .b-rule,
+.scene.active .b-fitfo,
 .scene.active .b-url { animation-play-state: running; }
 
-/* ═══════════════════════════════
-   DATE SCENE
-═══════════════════════════════ */
-
+/* DATE */
 .date-wrap {
   position: absolute;
   inset: 0;
@@ -519,7 +407,7 @@ html, body {
 }
 
 .d-may {
-  font-size: clamp(52px, 13vw, 104px);
+  font-size: clamp(54px, 14vw, 108px);
   font-weight: 300;
   font-style: italic;
   color: var(--gold);
@@ -566,10 +454,6 @@ html, body {
 .scene.active .d-rule,
 .scene.active .d-url { animation-play-state: running; }
 
-/* ═══════════════════════════════
-   KEYFRAMES
-═══════════════════════════════ */
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -580,21 +464,9 @@ html, body {
   to   { opacity: 1; filter: blur(0); }
 }
 
-/* TRANSITION OVERLAY */
-#blackout {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  z-index: 200;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* PROGRESS */
 .prog {
   position: fixed;
-  bottom: 0;
-  left: 0;
+  bottom: 0; left: 0;
   height: 1.5px;
   width: 0;
   background: linear-gradient(to right, rgba(197,165,90,0.1), rgba(197,165,90,0.5));
@@ -611,57 +483,11 @@ html, body {
   <div class="lb lb-bottom"></div>
   <div class="grain"></div>
   <div class="vignette"></div>
-  <div id="blackout"></div>
 
-  <!-- ══════════════════════════════
-       S1 — THE PHILOSOPHY
-       The answers are incomplete
-  ══════════════════════════════ -->
+  <!-- S1 — THE DECLARATION -->
   <div class="scene" id="s1">
-    <div class="scene-bg kb-slow"></div>
-    <div class="scene-overlay grade-cosmos"></div>
-    <div class="scene-content">
-      <p class="t-label">The answers</p>
-      <p class="t-italic a1">Not in the noise.</p>
-      <p class="t-italic a2" style="margin-top:28px;">Not in the speed.</p>
-      <p class="t-italic a3" style="margin-top:28px;">In the vast, uncomfortable quiet.</p>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       S2 — THE QUESTION
-  ══════════════════════════════ -->
-  <div class="scene" id="s2">
-    <div class="scene-bg kb-in"></div>
-    <div class="scene-overlay grade-deep"></div>
-    <div class="scene-content">
-      <p class="t-italic a1" style="font-size: clamp(28px, 6.5vw, 50px);">The answers are incomplete.</p>
-      <div class="g-rule"></div>
-      <p class="t-main a2">And still —</p>
-      <p class="t-main t-gold a3" style="margin-top:12px; font-size: clamp(30px, 7vw, 54px);">it is yours to solve.</p>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       S3 — NOT TOMORROW. NOW.
-  ══════════════════════════════ -->
-  <div class="scene" id="s3">
-    <div class="scene-bg kb-right"></div>
-    <div class="scene-overlay grade-dark"></div>
-    <div class="scene-content">
-      <p class="t-italic a1">And demands contemplation.<br>And answers.</p>
-      <p class="t-main a2" style="margin-top:24px;">Not tomorrow.</p>
-      <p class="t-main t-gold a3" style="margin-top:8px; font-size: clamp(32px, 7vw, 56px); letter-spacing: 0.04em;">Now.</p>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       S4 — THE DECLARATION
-       I WILL. FITFO — standalone
-  ══════════════════════════════ -->
-  <div class="scene" id="s4">
     <div class="decl-wrap">
-      <p class="decl-label">The Declaration</p>
+      <p class="decl-label">May 4th · 2026</p>
       <div class="decl-i">I</div>
       <div class="decl-will">WILL<span class="decl-period">.</span></div>
       <div class="decl-rule"></div>
@@ -669,38 +495,29 @@ html, body {
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       S5 — MIAMI SKYLINE DAY
-       The city that held this
-  ══════════════════════════════ -->
-  <div class="scene" id="s5">
+  <!-- S2 — MIAMI SKYLINE -->
+  <div class="scene" id="s2">
     <div class="scene-bg kb-slow"></div>
     <div class="scene-overlay grade-miami"></div>
     <div class="scene-content">
       <p class="t-label">Miami, Florida</p>
-      <p class="t-main a1">This is where it was built.</p>
-      <p class="t-italic a2" style="margin-top:20px;">In the quiet between<br>who you were<br>and who you are becoming.</p>
+      <p class="t-main a1">Built here.</p>
+      <p class="t-italic a2" style="margin-top:20px;">On a balcony in Miami.<br>A cigar burning.<br>Well after midnight.</p>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       S6 — WYNWOOD
-       The city alive
-  ══════════════════════════════ -->
-  <div class="scene" id="s6">
-    <div class="scene-bg kb-left"></div>
+  <!-- S3 — WYNWOOD -->
+  <div class="scene" id="s3">
+    <div class="scene-bg kb-right"></div>
     <div class="scene-overlay grade-wynwood"></div>
     <div class="scene-content">
-      <p class="t-label">Coral Gables · Miami</p>
-      <p class="t-italic a1">A city that rewards<br>the man who figures it out.</p>
+      <p class="t-label">Wynwood · Miami</p>
+      <p class="t-italic a1">A city that rewards<br>the man who decides.</p>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       S7 — BISCAYNE BAY
-       The water. The horizon.
-  ══════════════════════════════ -->
-  <div class="scene" id="s7">
+  <!-- S4 — BISCAYNE BAY -->
+  <div class="scene" id="s4">
     <div class="scene-bg kb-in"></div>
     <div class="scene-overlay grade-bay"></div>
     <div class="scene-content">
@@ -709,55 +526,43 @@ html, body {
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       S8 — THE RITUAL
-       The cigar
-  ══════════════════════════════ -->
-  <div class="scene" id="s8">
-    <div class="scene-bg kb-right"></div>
-    <div class="scene-overlay grade-warm"></div>
+  <!-- S5 — CIGAR CRAFT -->
+  <div class="scene" id="s5">
+    <div class="scene-bg kb-slow"></div>
+    <div class="scene-overlay grade-cigar"></div>
     <div class="scene-content">
       <p class="t-label">The ritual</p>
+      <p class="t-italic a1">The cigar is the pause.</p>
+      <p class="t-main a2" style="margin-top:20px;">The moment is the point.</p>
+    </div>
+  </div>
+
+  <!-- S6 — CIGAR BURNING -->
+  <div class="scene" id="s6">
+    <div class="scene-bg kb-left"></div>
+    <div class="scene-overlay grade-warm"></div>
+    <div class="scene-content">
+      <p class="t-label">The record</p>
       <p class="t-italic a1">One cigar. One hour.</p>
       <p class="t-italic a2" style="margin-top:20px;">One honest entry.</p>
       <p class="t-main a3" style="margin-top:36px;">The record begins<br>when you open it.</p>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       S9 — THE JOURNAL
-       The invitation
-  ══════════════════════════════ -->
-  <div class="scene" id="s9">
-    <div class="scene-bg kb-slow"></div>
+  <!-- S7 — THE INVITATION -->
+  <div class="scene" id="s7">
+    <div class="scene-bg kb-out"></div>
     <div class="scene-overlay grade-dark"></div>
     <div class="scene-content">
       <p class="t-label">The Founding 50</p>
       <p class="t-main a1">The first chapter<br>opens today.</p>
-      <p class="t-italic a2" style="margin-top:24px;">Fifty spots.<br>The foundation of everything<br>that follows.</p>
-      <p class="t-main t-gold a3" style="margin-top:32px; font-size: clamp(14px, 3vw, 20px); letter-spacing: 0.1em;">iwill.world</p>
+      <p class="t-italic a2" style="margin-top:24px;">For the man who carries<br>more than he says.</p>
+      <p class="t-main t-gold a3" style="margin-top:32px; font-size: clamp(16px, 3.5vw, 24px); letter-spacing: 0.12em;">iwill.world</p>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       S10 — THE QUOTE
-  ══════════════════════════════ -->
-  <div class="scene" id="s10">
-    <div class="scene-bg kb-in"></div>
-    <div class="scene-overlay grade-dark"></div>
-    <div class="scene-content" style="justify-content:center; padding-bottom:0;">
-      <div class="quote-wrap">
-        <span class="q1">For the man who carries<br>more than he says.</span>
-        <span class="q2" style="margin-top:16px;">And is ready to figure it out.</span>
-        <span class="q-sig">— W</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════
-       S11 — BRAND MARK
-  ══════════════════════════════ -->
-  <div class="scene" id="s11">
+  <!-- S8 — BRAND MARK -->
+  <div class="scene" id="s8">
     <div class="brand-wrap">
       <div class="b-i">I</div>
       <div class="b-will">WILL<span class="b-period">.</span></div>
@@ -767,10 +572,8 @@ html, body {
     <div class="b-url">iwill.world</div>
   </div>
 
-  <!-- ══════════════════════════════
-       S12 — MAY 4TH 2026 FINAL
-  ══════════════════════════════ -->
-  <div class="scene" id="s12">
+  <!-- S9 — MAY 4TH 2026 -->
+  <div class="scene" id="s9">
     <div class="date-wrap">
       <div class="d-may">May 4th</div>
       <div class="d-year">2026</div>
@@ -786,22 +589,17 @@ html, body {
 <script>
   const scenes = document.querySelectorAll('.scene');
   const prog = document.getElementById('prog');
-  const blackout = document.getElementById('blackout');
 
-  // Scene durations — philosophy builds slow, Miami breathes, closes with conviction
   const dur = [
-    6000,  // S1  — philosophy opening
-    7000,  // S2  — the answers incomplete
-    5500,  // S3  — not tomorrow now
-    5000,  // S4  — the declaration standalone
-    6000,  // S5  — Miami skyline
-    5000,  // S6  — Wynwood
-    5500,  // S7  — the bay / the decision
-    6000,  // S8  — the ritual
-    6500,  // S9  — the invitation / Founding 50
-    8000,  // S10 — the quote
-    7000,  // S11 — brand mark
-    8000,  // S12 — May 4th final
+    5000,  // S1 — declaration
+    5500,  // S2 — Miami skyline
+    4500,  // S3 — Wynwood
+    5000,  // S4 — the bay
+    5000,  // S5 — cigar craft
+    5500,  // S6 — cigar burning
+    6000,  // S7 — invitation
+    6500,  // S8 — brand mark
+    7000,  // S9 — May 4th final
   ];
 
   const total = dur.reduce((a,b) => a+b, 0);
@@ -827,27 +625,21 @@ html, body {
     resetAnims(scenes[index]);
   }
 
-  function dissolve(callback) {
-    scenes[cur].style.transition = 'opacity 1.8s cubic-bezier(0.4,0,0.2,1)';
-    scenes[cur].style.opacity = '0';
-    setTimeout(() => {
-      callback();
-    }, 400);
-  }
-
   activateScene(0);
 
   function next() {
     if (cur >= scenes.length - 1) return;
     const currentDur = dur[cur];
     setTimeout(() => {
-      dissolve(() => {
+      scenes[cur].style.transition = 'opacity 1.4s cubic-bezier(0.4,0,0.2,1)';
+      scenes[cur].style.opacity = '0';
+      setTimeout(() => {
         cur++;
         if (cur < scenes.length) {
           activateScene(cur);
           next();
         }
-      });
+      }, 400);
     }, currentDur);
   }
 
